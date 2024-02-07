@@ -1,6 +1,7 @@
-package n1exercici1;
+package n1exercici1.services;
 
 import n1exercici1.products.*;
+
 import java.util.List;
 
 public class Stock {
@@ -15,8 +16,8 @@ public class Stock {
     private Stock (List<Product> productStock){
         productStock.forEach(this::addProduct);
     }
-    public Stock getStock (){
-        if (stock == null) stock = new Stock(service.getProductList());
+    public Stock getStock (String shopName){
+        if (stock == null) stock = new Stock(service.getProductList(shopName));
         return stock;
     }
 
@@ -42,6 +43,7 @@ public class Stock {
             decorationStock.add((Decoration) product);
         }
         updateStockValue(product, "add");
+        //UPDATE DATABASE??
     }
     public void removeProduct (Product product){
         if (product instanceof Tree) {
@@ -52,23 +54,11 @@ public class Stock {
             decorationStock.remove((Decoration) product);
         }
         updateStockValue(product, "remove");
+        //UPDATE DATABASE??
     }
     private void updateStockValue(Product product, String action){
         stockValue += (action.equals("add") ? product.getPrice() : -product.getPrice());
     }
 
-    public void printTreeStock(){
-        treeStock.forEach(System.out::println);
-    }
-    public void printFlowerStock(){
-        flowerStock.forEach(System.out::println);
-    }
-    public void printDecorationStock(){
-        decorationStock.forEach(System.out::println);
-    }
-    public void printStock() {
-        System.out.println("Tree's quantity: " + treeStock.size() + ".\n" +
-                "Flower's quantity: " + flowerStock.size() + ".\n" +
-                "Decoration's quantity: " + decorationStock.size() + ".");
-    }
+
 }

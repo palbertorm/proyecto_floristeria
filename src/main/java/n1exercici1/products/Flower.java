@@ -1,29 +1,29 @@
 package n1exercici1.products;
 
-public class Tree extends Product{
+public class Flower extends Product{
 
     private int idTree;
     private int idCounter;
-    private String height;
+    private String color;
 
-    public Tree (String name, double price, String height){
+    public Flower(String name, double price, String color){
         super(name, price);
-        this.height = height;
+        this.color = color;
         this.idTree += idCounter++;
     }
 
     public int getIdTree(){
         return this.idTree;
     }
-    public String getHeight(){
-        return this.height;
+    public String getColor(){
+        return this.color;
     }
-    public void setHeight(){
-        this.height = height;
+    public void setColor(String color){
+        this.color = color;
     }
 
     public String toString(){
-        return "Tree: " + getName() + ", Height: " + this.height + ", Price: " + getPrice() + "€.";
+        return "Flower: " + getName() + ", Color: " + this.color + ", Price: " + getPrice() + "€.";
     }
 
 }

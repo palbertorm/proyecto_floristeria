@@ -1,4 +1,4 @@
-package n1exercici1;
+package n1exercici1.services;
 
 import n1exercici1.products.Product;
 
@@ -8,7 +8,7 @@ public class DAOService {
 
     private List<Product> productList;
 
-    public List<Product> getProductList (){
+    public List<Product> getProductList (String shopName){
         return productList;
     }
 

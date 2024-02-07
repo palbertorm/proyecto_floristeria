@@ -1,29 +1,31 @@
 package n1exercici1.products;
 
-public class Tree extends Product{
+import n1exercici1.products.enums.MadeOf;
+
+public class Decoration extends Product{
 
     private int idTree;
     private int idCounter;
-    private String height;
+    private MadeOf madeOf;
 
-    public Tree (String name, double price, String height){
+    public Decoration(String name, double price, MadeOf madeOf){
         super(name, price);
-        this.height = height;
+        this.madeOf = madeOf;
         this.idTree += idCounter++;
     }
 
     public int getIdTree(){
         return this.idTree;
     }
-    public String getHeight(){
-        return this.height;
+    public MadeOf getMadeOf(){
+        return this.madeOf;
     }
-    public void setHeight(){
-        this.height = height;
+    public void setMadeOf(MadeOf madeOf){
+        this.madeOf = madeOf;
     }
 
     public String toString(){
-        return "Tree: " + getName() + ", Height: " + this.height + ", Price: " + getPrice() + "€.";
+        return "Decoration: " + getName() + ", Made of: " + this.madeOf + ", Price: " + getPrice() + "€.";
     }
 
 }
