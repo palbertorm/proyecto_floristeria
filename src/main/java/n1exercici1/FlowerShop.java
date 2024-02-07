@@ -19,7 +19,6 @@ public class FlowerShop {
         return flowerShop;
     }
 
-
     public void addTree(String treeName, double treePrice, double treeHeigth){
         stock.addProduct(new Tree(treeName, treePrice, treeHeigth));
     }
