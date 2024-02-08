@@ -41,7 +41,7 @@ public class Stock {
     }
 
     public void addProduct (Product product) {
-        if (product instanceof Tree) {;
+        if (product instanceof Tree) {
             treeStock.add((Tree) product);
         } else if (product instanceof Flower) {
             flowerStock.add((Flower) product);

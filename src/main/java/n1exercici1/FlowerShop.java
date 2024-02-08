@@ -11,7 +11,7 @@ import java.util.List;
 
 public class FlowerShop {
 
-    private DAOService service;
+    private final DAOService service;
     private static FlowerShop flowerShop;
     private final String flowerShopName;
     private static Stock stock;
