@@ -9,7 +9,11 @@ public class DAOService {
     private List<Product> productList;
 
     public List<Product> getProductList (String shopName){
+        productList = FakeBBDD.getProductList();
         return productList;
+    }
+    public void setProductList (List<Product> productList){
+        this.productList = productList;
     }
 
 }
