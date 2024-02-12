@@ -18,5 +18,8 @@ public class FakeBBDD {
         productList.add(new Decoration("Espejo",69.99, MadeOf.WOOD));
         return productList;
     }
+    public static void returnProductList(List<Product> productList){
+
+    }
 
 }

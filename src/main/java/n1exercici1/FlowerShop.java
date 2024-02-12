@@ -20,10 +20,18 @@ public class FlowerShop {
         this.service = new DAOService();
         this.flowerShopName = flowerShopName;
         stock = Stock.getStock(flowerShopName, service);
+        //FALTAN VENTAS
     }
     public static FlowerShop openFlowerShop(String flowerShopName){
         if (flowerShop == null) flowerShop = new FlowerShop(flowerShopName);
         return flowerShop;
+    }
+
+    public void deleteFlowerShop(){
+        flowerShop = null;
+    }
+    public boolean flowerShopDoesNotExists() {
+        return stock.getProductStock().isEmpty();
     }
 
     // TREE'S METHOD
@@ -90,12 +98,9 @@ public class FlowerShop {
     }
 
     public void saveProductList(){
-        List<Product> productList = new ArrayList<>();
-        productList.addAll(stock.getTreeStock());
-        productList.addAll(stock.getFlowerStock());
-        productList.addAll(stock.getDecorationStock());
+        List<Product> productList = stock.getProductStock();
         productList.sort(Comparator.comparingInt(Product::getIdProduct));
-        service.setProductList(productList);
+        service.returnProductList(productList);
     }
 
 }

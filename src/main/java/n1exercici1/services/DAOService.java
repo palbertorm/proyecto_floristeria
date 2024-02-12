@@ -12,7 +12,7 @@ public class DAOService {
         productList = FakeBBDD.getProductList();
         return productList;
     }
-    public void setProductList (List<Product> productList){
+    public void returnProductList (List<Product> productList){
         this.productList = productList;
     }
 

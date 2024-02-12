@@ -3,7 +3,11 @@ package n1exercici1;
 import n1exercici1.exceptions.NotValidOptionException;
 import n1exercici1.exceptions.OnlyYesNoException;
 import n1exercici1.exceptions.ProductAlreadyExistsException;
+import n1exercici1.products.Product;
 import n1exercici1.products.enums.MadeOf;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static n1exercici1.services.InputData.*;
 
@@ -12,7 +16,25 @@ public class App {
     public static void runApp(){
 
         System.out.println("---FLOWER SHOP MANAGER---");
+        /*
+        int option;
+        do{
+            FlowerShop flowerShop = askShopName();
+            try {
+                if (flowerShop.flowerShopDoesNotExists()) {
+                    yesNoValidator(askString("This name is not registered. Want to create a new flowerShop? (YES/NO): "));
+                }
+            } catch (OnlyYesNoException e){
+
+            }
+        } while (option!=0);
+         */
         FlowerShop flowerShop = askShopName();
+        runMainMenu(flowerShop);
+    }
+
+    // LOGIC METHODS
+    private static void runMainMenu(FlowerShop flowerShop){
         int menuOption;
         do {
             menuOption = askMenuOption(mainMenu(),4);
@@ -21,12 +43,10 @@ public class App {
                 case 2 -> runRemoveProduct(flowerShop);
                 case 3 -> runStoreInfo(flowerShop);
                 case 4 -> runSalesManager(flowerShop);
-                case 0 -> runCloseUp(flowerShop);
+                case 0 -> runWrapUp(flowerShop);
             }
         } while (menuOption!=0);
     }
-
-    // LOGIC METHODS
     private static void runAddProduct(FlowerShop flowerShop){
         int option;
         String productName;
@@ -62,16 +82,13 @@ public class App {
             option = askMenuOption(removeProductMenu(),3);
             switch (option) {
                 case 1 -> {
-                    productName = askName();
-                    flowerShop.removeTree(productName);
+                    flowerShop.removeTree(askName());
                 }
                 case 2 -> {
-                    productName = askName();
-                    flowerShop.removeFlower(productName);
+                    flowerShop.removeFlower(askName());
                 }
                 case 3 -> {
-                    productName = askName();
-                    flowerShop.removeDecoration(productName);
+                    flowerShop.removeDecoration(askName());
                 }
             }
         } while (option!=0);
@@ -115,6 +132,7 @@ public class App {
     }
     private static void runSalesMenu(FlowerShop flowerShop){
         int option;
+        List<Product> cart = new ArrayList<Product>();
         do {
             option = askMenuOption(newSaleMenu(),3);
             switch (option) {
@@ -123,9 +141,9 @@ public class App {
                 case 3 -> System.out.println("OOOOOOOOOOOOOOOOO");
                 case 0 -> option = confirmExiting();
             }
-        } while (option!=0);
+        } while (option!=0 && option!=3);
     }
-    private static void runCloseUp(FlowerShop flowerShop){
+    private static void runWrapUp(FlowerShop flowerShop){
         flowerShop.saveProductList();
     }
 
@@ -146,7 +164,11 @@ public class App {
         return askString("Enter the flower's color: ");
     }
     private static MadeOf askMaterial(){
-        return ((askMenuOption(materialTypeMenu(),1)==0) ? MadeOf.WOOD : MadeOf.PLASTIC);
+        int option;
+        do {
+            option = askMenuOption(materialTypeMenu(),1);
+        } while (option!=0 && option!=1);
+        return (option==0 ? MadeOf.WOOD : MadeOf.PLASTIC);
     }
 
     // ASK MENU OPTION AND VALIDATOR METHODS

@@ -9,10 +9,11 @@ import java.util.List;
 public class Stock {
 
     private static Stock stock;
-    private boolean initStock = false;
-    private List<Tree> treeStock;
-    private List<Flower> flowerStock;
-    private List<Decoration> decorationStock;
+    private final boolean initStock; // IMPIDE QUE SE LANZE EL MENSAJE PRODUCTO AÑADIDO HASTA QUE SE HAYA CARGADO LA BBDD
+    private final List<Tree> treeStock;
+    private final List<Flower> flowerStock;
+    private final List<Decoration> decorationStock;
+    private List<Product> productStock;
     private double stockValue;
 
     private Stock (String shopName, DAOService service){
@@ -27,6 +28,10 @@ public class Stock {
         if (stock == null) stock = new Stock(shopName, service);
         return stock;
     }
+    public List<Product> getProductStock (){
+        return this.productStock;
+    }
+
     public List<Tree> getTreeStock(){
         return treeStock;
     }
@@ -48,8 +53,9 @@ public class Stock {
         } else if (product instanceof Decoration) {
             decorationStock.add((Decoration) product);
         }
-        if(this.initStock) System.out.println("Product stocked.");
+        if(this.initStock) System.out.println("Product stocked."); // IMPIDE QUE SE LANZE EL MENSAJE PRODUCTO AÑADIDO HASTA QUE SE HAYA CARGADO LA BBDD
         updateStockValue(product, "add");
+        //updateProductStock(product, "add");
     }
     public void removeProduct (Product product){
         try {
@@ -61,6 +67,7 @@ public class Stock {
             }
             System.out.println("Product removed");
             updateStockValue(product, "remove");
+            //updateProductStock(product, "remove");
         } catch (ProductDoesNotExistsException e){
             System.out.println(e.getMessage());
         }
@@ -68,5 +75,15 @@ public class Stock {
     private void updateStockValue(Product product, String action){
         stockValue += (action.equals("add") ? product.getPrice() : -product.getPrice());
     }
+    /*
+    private void updateProductStock(Product product, String action){
+        if (action.equals("add")) {
+            productStock.add(product);
+        } else {
+            productStock.remove(product);
+        }
+
+    }
+     */
 
 }
