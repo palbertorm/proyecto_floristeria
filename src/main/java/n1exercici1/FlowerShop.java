@@ -13,12 +13,12 @@ public class FlowerShop {
     private final DAOService service;
     private static FlowerShop flowerShop;
     private final String flowerShopName;
-    private static Stock stock;
+    private final Stock stock;
 
     private FlowerShop (String flowerShopName){
         this.service = new DAOService();
         this.flowerShopName = flowerShopName;
-        stock = Stock.getStock(flowerShopName, service);
+        this.stock = Stock.getStock(flowerShopName, service);
         //FALTAN VENTAS
     }
     public static FlowerShop openFlowerShop(String flowerShopName){
