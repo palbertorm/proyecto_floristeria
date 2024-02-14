@@ -27,12 +27,14 @@ public class FlowerShop {
         return flowerShop;
     }
 
+    public boolean seeIfFlowerShopExists(){
+        return stock.getProductStock()!=null;
+    }
+
     public void deleteFlowerShop(){
         flowerShop = null;
     }
-    public boolean flowerShopDoesNotExists() {
-        return stock.getProductStock().isEmpty();
-    }
+
 
     // TREE'S METHOD
     public void addTree(String treeName, double treePrice, double treeHeigth){

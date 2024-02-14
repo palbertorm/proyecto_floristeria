@@ -22,6 +22,7 @@ public class Stock {
         this.decorationStock = new ArrayList<>();
         List<Product> productStock = service.getProductList(shopName);
         if (productStock!=null) productStock.forEach(this::addProduct);
+        this.productStock = productStock;
         this.initStock = true;
     }
     public static Stock getStock (String shopName, DAOService service){
@@ -75,7 +76,6 @@ public class Stock {
     private void updateStockValue(Product product, String action){
         stockValue += (action.equals("add") ? product.getPrice() : -product.getPrice());
     }
-    /*
     private void updateProductStock(Product product, String action){
         if (action.equals("add")) {
             productStock.add(product);
@@ -84,6 +84,5 @@ public class Stock {
         }
 
     }
-     */
 
 }

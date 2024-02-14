@@ -3,6 +3,7 @@ package n1exercici1;
 import n1exercici1.exceptions.NotValidOptionException;
 import n1exercici1.exceptions.OnlyYesNoException;
 import n1exercici1.exceptions.ProductAlreadyExistsException;
+import n1exercici1.products.Flower;
 import n1exercici1.products.Product;
 import n1exercici1.products.enums.MadeOf;
 
@@ -16,21 +17,14 @@ public class App {
     public static void runApp(){
 
         System.out.println("---FLOWER SHOP MANAGER---");
-        /*
-        int option;
-        do{
-            FlowerShop flowerShop = askShopName();
-            try {
-                if (flowerShop.flowerShopDoesNotExists()) {
-                    yesNoValidator(askString("This name is not registered. Want to create a new flowerShop? (YES/NO): "));
-                }
-            } catch (OnlyYesNoException e){
-
-            }
-        } while (option!=0);
-         */
         FlowerShop flowerShop = askShopName();
-        runMainMenu(flowerShop);
+        if (flowerShop.seeIfFlowerShopExists()){
+            runMainMenu(flowerShop);
+        } else {
+            System.out.println("\nThis flower shop is not included in the database,\n" +
+                    " please, consider to create first the database\n " +
+                    "or check if the flowershop name is correct.");
+        }
     }
 
     // LOGIC METHODS
