@@ -5,7 +5,6 @@ import n1exercici1.products.enums.MadeOf;
 import n1exercici1.services.DAOService;
 import n1exercici1.services.Stock;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -26,15 +25,9 @@ public class FlowerShop {
         if (flowerShop == null) flowerShop = new FlowerShop(flowerShopName);
         return flowerShop;
     }
-
     public boolean seeIfFlowerShopExists(){
         return stock.getProductStock()!=null;
     }
-
-    public void deleteFlowerShop(){
-        flowerShop = null;
-    }
-
 
     // TREE'S METHOD
     public void addTree(String treeName, double treePrice, double treeHeigth){
