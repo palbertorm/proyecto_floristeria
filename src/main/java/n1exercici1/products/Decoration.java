@@ -4,28 +4,21 @@ import n1exercici1.products.enums.MadeOf;
 
 public class Decoration extends Product{
 
-    private int idTree;
-    private int idCounter;
-    private MadeOf madeOf;
+    private String material;
 
     public Decoration(String name, double price, MadeOf madeOf){
         super(name, price);
-        this.madeOf = madeOf;
-        this.idTree += idCounter++;
+        this.material = madeOf.name().toLowerCase();
     }
 
-    public int getIdTree(){
-        return this.idTree;
+    public String getMaterial(){
+        return this.material;
     }
-    public MadeOf getMadeOf(){
-        return this.madeOf;
+    public void setMaterial(MadeOf madeOf){
+        this.material = madeOf.name().toLowerCase();
     }
-    public void setMadeOf(MadeOf madeOf){
-        this.madeOf = madeOf;
-    }
-
     public String toString(){
-        return "Decoration: " + getName() + ", Made of: " + this.madeOf + ", Price: " + getPrice() + "€.";
+        return "Decoration: " + getName() + ", Made of: " + getMaterial() + ", Price: " + getPrice() + "€.";
     }
 
 }
