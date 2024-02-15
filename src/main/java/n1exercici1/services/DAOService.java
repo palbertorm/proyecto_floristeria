@@ -1,9 +1,9 @@
 package n1exercici1.services;
 
-import n1exercici1.Sale;
+import n1exercici1.connections.FakeBBDD;
+import n1exercici1.connections.TxtBBDD;
 import n1exercici1.products.Product;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DAOService {
@@ -18,25 +18,31 @@ public class DAOService {
     }
 
     public List<Product> getProductList (String flowerShopName){
-        this.productList = FakeBBDD.getProductList(); // GET FAKE DATA
-        this.productList = GetDataFromTxt.getProductList(flowerShopName+"ProductList.txt"); // GET DATA FROM TXT
-        // GET DATA FROM SQL
+        //this.productList = FakeBBDD.getProductList();
+        this.productList = TxtBBDD.getProductList(flowerShopName+"ProductList.txt");
+        //this.productList = GetDataFromSQL.getProductList(
         // GET DATA FROM NOSQL
         return this.productList;
     }
     public List<Sale> getSaleList (String flowerShopName){
-        this.saleList = FakeBBDD.getSaleList(); // GET FAKE DATA
-        // GET DATA FROM TXT
+        //this.saleList = FakeBBDD.getSaleList();
+        this.saleList = TxtBBDD.getSaleList(flowerShopName+"SaleList.txt");
         // GET DATA FROM SQL
         // GET DATA FROM NOSQL
         return this.saleList;
     }
 
-    public void exportProductList (List<Product> productList){
-        this.productList = productList;
+    public void exportProductList (List<Product> productList, String flowerShopName){
+        //this.productList = productList;
+        TxtBBDD.returnProductList(productList, flowerShopName+"ProductList.txt");
+        // RETURN DATA TO SQL
+        // RETURN DATA TO NOSQL
     }
-    public void exportSaleList (List<Sale> saleList){
-        this.saleList = saleList;
+    public void exportSaleList (List<Sale> saleList, String flowerShopName){
+        //this.saleList = saleList;
+        TxtBBDD.returnSaleList(saleList, flowerShopName+"SaleList.txt");
+        // RETURN DATA TO SQL
+        // RETURN DATA TO NOSQL
     }
 
 }

@@ -1,11 +1,11 @@
-package n1exercici1.services;
+package n1exercici1.connections;
 
-import n1exercici1.Sale;
 import n1exercici1.products.Decoration;
 import n1exercici1.products.Flower;
 import n1exercici1.products.Product;
 import n1exercici1.products.Tree;
 import n1exercici1.products.enums.MadeOf;
+import n1exercici1.services.Sale;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,8 @@ public class FakeBBDD {
 
     public static List<Sale> getSaleList(){
         List<Sale> saleList = new ArrayList<>();
-        saleList.add(new Sale(getProductList(),155));
+        List<String> productList = new ArrayList<>();
+        saleList.add(new Sale(155,productList));
         return saleList;
     }
 

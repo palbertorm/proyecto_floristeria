@@ -1,8 +1,7 @@
-package n1exercici1;
+package n1exercici1.services;
 
 import n1exercici1.exceptions.ProductDoesNotExistsException;
 import n1exercici1.products.*;
-import n1exercici1.services.DAOService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,16 +10,13 @@ public class Stock {
 
     private static Stock stock;
     private final boolean initStock; // IMPIDE QUE SE LANZE EL MENSAJE PRODUCTO AÑADIDO HASTA QUE SE HAYA CARGADO LA BBDD
-    private final List<Tree> treeStock;
-    private final List<Flower> flowerStock;
-    private final List<Decoration> decorationStock;
+    private final List<Tree> treeStock = new ArrayList<>();
+    private final List<Flower> flowerStock = new ArrayList<>();
+    private final List<Decoration> decorationStock = new ArrayList<>();
     private final List<Product> productStock;
     private double stockValue;
 
     private Stock (DAOService service, String flowerShopName){
-        this.treeStock = new ArrayList<>();
-        this.flowerStock = new ArrayList<>();
-        this.decorationStock = new ArrayList<>();
         List<Product> productStock = service.getProductList(flowerShopName);
         if (productStock!=null) productStock.forEach(this::addProduct);
         this.productStock = productStock;
@@ -47,17 +43,18 @@ public class Stock {
         return stockValue;
     }
 
-    public void addProduct (Product product) {
-        if (product instanceof Tree) {
-            treeStock.add((Tree) product);
-        } else if (product instanceof Flower) {
-            flowerStock.add((Flower) product);
-        } else if (product instanceof Decoration) {
-            decorationStock.add((Decoration) product);
+    public void addProduct (Product product){
+        try {
+            switch (product){
+                case Tree tree -> treeStock.add(tree);
+                case Flower flower -> flowerStock.add(flower);
+                case Decoration decoration -> decorationStock.add(decoration);
+                default -> throw new ProductDoesNotExistsException("This type of product does not exist.");
+            }
+            wrapStockChanges(product, "add");
+        } catch (ProductDoesNotExistsException e){
+            System.out.println(e.getMessage());
         }
-        if(this.initStock) System.out.println("Product stocked."); // IMPIDE QUE SE LANZE EL MENSAJE PRODUCTO AÑADIDO HASTA QUE SE HAYA CARGADO LA BBDD
-        updateStockValue(product, "add");
-        updateProductStock(product, "add");
     }
     public void removeProduct (Product product){
         try {
@@ -67,15 +64,20 @@ public class Stock {
                 case Decoration decoration -> decorationStock.remove(decoration);
                 default -> throw new ProductDoesNotExistsException("This product does not exist.");
             }
-            System.out.println("Product removed");
-            updateStockValue(product, "remove");
-            updateProductStock(product, "remove");
+            wrapStockChanges(product, "remove");
         } catch (ProductDoesNotExistsException e){
             System.out.println(e.getMessage());
         }
     }
     public Product findProduct(String productName){
-        return this.productStock.stream().filter(product -> product.getName().equalsIgnoreCase(productName)).findFirst().orElse(null);
+        return this.productStock.stream().filter(product -> product.getName().equalsIgnoreCase(productName))
+                .findFirst().orElse(null);
+    }
+    private void wrapStockChanges(Product product, String action){
+        String message = action.equals("remove") ? "Product removed" : this.initStock ? "Product stocked" : null;
+        if (message!=null) System.out.println(message);
+        updateStockValue(product, action);
+        updateProductStock(product, action);
     }
     private void updateStockValue(Product product, String action){
         stockValue += (action.equals("add") ? product.getPrice() : -product.getPrice());
@@ -86,7 +88,6 @@ public class Stock {
         } else {
             productStock.remove(product);
         }
-
     }
 
 }

@@ -2,7 +2,6 @@ package n1exercici1;
 
 import n1exercici1.exceptions.NotValidOptionException;
 import n1exercici1.exceptions.OnlyYesNoException;
-import n1exercici1.exceptions.ProductAlreadyExistsException;
 import n1exercici1.exceptions.ProductDoesNotExistsException;
 import n1exercici1.products.Product;
 import n1exercici1.products.enums.MadeOf;
@@ -45,21 +44,12 @@ public class App {
     }
     private static void runAddProduct(FlowerShop flowerShop){
         int option;
-        String productName;
         do {
             option = askMenuOption(addProductMenu(),3);
-            if (option!=0){
-                productName = askProductName();
-                try {
-                    seeIfItExists(flowerShop, productName);
-                    switch (option) {
-                        case 1 -> flowerShop.addTree(productName, askProductPrice(), askHeight());
-                        case 2 -> flowerShop.addFlower(productName, askProductPrice(), askColor());
-                        case 3 -> flowerShop.addDecoration(productName, askProductPrice(), askMaterial());
-                    }
-                } catch (ProductAlreadyExistsException e){
-                    System.out.println(e.getMessage());
-                }
+            switch (option) {
+                case 1 -> flowerShop.addTree(askProductName(), askProductPrice(), askHeight());
+                case 2 -> flowerShop.addFlower(askProductName(), askProductPrice(), askColor());
+                case 3 -> flowerShop.addDecoration(askProductName(), askProductPrice(), askMaterial());
             }
         } while (option!=0);
     }
@@ -195,11 +185,6 @@ public class App {
     private static void optionValidator (int menuOption, int max) throws NotValidOptionException {
         if (menuOption<0 || menuOption>max) {
             throw new NotValidOptionException("This option does not exist.");
-        }
-    }
-    private static void seeIfItExists(FlowerShop flowerShop, String productName) throws ProductAlreadyExistsException{
-        if (flowerShop.findProduct(productName)!=null) {
-            throw new ProductAlreadyExistsException("This product is already stocked");
         }
     }
     private static int confirmExiting(String message){

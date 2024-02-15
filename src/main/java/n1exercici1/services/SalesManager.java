@@ -1,9 +1,8 @@
-package n1exercici1;
+package n1exercici1.services;
 
+import n1exercici1.connections.TxtBBDD;
 import n1exercici1.products.Product;
-import n1exercici1.services.DAOService;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -22,9 +21,7 @@ public class SalesManager {
         return salesManager;
     }
     private void calculateTotalSalesValue(){
-        for (Sale sale : this.salesHistoryList){
-            this.earnedMoney += sale.getSalePrice();
-        }
+        this.earnedMoney = this.salesHistoryList.stream().mapToDouble(Sale::getSalePrice).sum();
     }
 
     public List<Sale> getSalesHistoryList() {
@@ -33,9 +30,13 @@ public class SalesManager {
     public double getEarnedMoney(){
         return this.earnedMoney;
     }
-    public void manageTheCart(List<Product> productList, double salePrice){
-        productList.sort(Comparator.comparingInt(Product::getIdProduct));
-        addSale(new Sale(productList,salePrice));
+
+    public void manageTheCart(List<Product> cart, double salePrice){
+        cart.sort(Comparator.comparingInt(Product::getIdProduct));
+        addSale(new Sale(salePrice, getProductsFromCart(cart)));
+    }
+    private List<String> getProductsFromCart(List<Product> cart){
+        return cart.stream().map(Product::toString).toList();
     }
     private void addSale(Sale sale) {
         this.salesHistoryList.add(sale);
@@ -49,8 +50,9 @@ public class SalesManager {
         this.salesHistoryList.forEach(System.out::println);
     }
     public void printTcket(int idSale){
-        this.salesHistoryList.get(idSale);
-        //AÑADIR MÉTODO PARA GUARDAR INFO EN UN TXT
+        Sale ticketSale = this.salesHistoryList.get(idSale);
+        System.out.println(ticketSale);
+        TxtBBDD.printSaleToTXT(ticketSale);
         System.out.println("\nThe ticket has been printed.");
     }
 }

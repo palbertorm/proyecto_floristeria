@@ -4,6 +4,9 @@ import n1exercici1.exceptions.ProductDoesNotExistsException;
 import n1exercici1.products.*;
 import n1exercici1.products.enums.MadeOf;
 import n1exercici1.services.DAOService;
+import n1exercici1.services.Sale;
+import n1exercici1.services.SalesManager;
+import n1exercici1.services.Stock;
 
 import java.util.Comparator;
 import java.util.List;
@@ -37,7 +40,8 @@ public class FlowerShop {
 
     // TREE'S METHOD
     public void addTree(String treeName, double treePrice, double treeHeigth){
-        stock.addProduct(new Tree(treeName, treePrice, treeHeigth));
+        if (findProduct(treeName)==null) stock.addProduct(new Tree(treeName, treePrice, treeHeigth));
+        else System.out.println("This product is already stocked");
     }
     public void printTreeStock(){
         stock.getTreeStock().forEach(System.out::println);
@@ -52,7 +56,8 @@ public class FlowerShop {
 
     // FLOWER'S METHOD
     public void addFlower(String flowerName, double flowerPrice, String flowerColor){
-        stock.addProduct(new Flower(flowerName, flowerPrice, flowerColor));
+        if (findProduct(flowerName)==null) stock.addProduct(new Flower(flowerName, flowerPrice, flowerColor));
+        else System.out.println("This product is already stocked");
     }
     public void printFlowerStock(){
         stock.getFlowerStock().forEach(System.out::println);
@@ -67,7 +72,8 @@ public class FlowerShop {
 
     // DECORATION'S METHOD
     public void addDecoration(String decorationName, double decorationPrice, MadeOf madeof) {
-        stock.addProduct(new Decoration(decorationName, decorationPrice, madeof));
+        if (findProduct(decorationName)==null) stock.addProduct(new Decoration(decorationName, decorationPrice, madeof));
+        else System.out.println("This product is already stocked");
     }
     public void printDecorationStock(){
         stock.getDecorationStock().forEach(System.out::println);
@@ -124,8 +130,9 @@ public class FlowerShop {
         List<Product> productList = stock.getProductStock();
         productList.sort(Comparator.comparingInt(Product::getIdProduct));
         List<Sale> saleList = salesManager.getSalesHistoryList();
-        service.exportProductList(productList);
-        service.exportSaleList(saleList);
+
+        service.exportProductList(productList, this.flowerShopName);
+        service.exportSaleList(saleList, this.flowerShopName);
     }
 
 }

@@ -1,4 +1,4 @@
-package n1exercici1.services;
+package n1exercici1.connections;
 
 import java.sql.*;
 

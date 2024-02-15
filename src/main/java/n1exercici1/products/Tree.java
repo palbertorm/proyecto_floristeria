@@ -2,7 +2,7 @@ package n1exercici1.products;
 
 public class Tree extends Product{
 
-    private double height;
+    private final double height;
 
     public Tree (String name, double price, double height){
         super(name, price);
@@ -11,9 +11,6 @@ public class Tree extends Product{
 
     public double getHeight(){
         return this.height;
-    }
-    public void setHeight(double height){
-        this.height = height;
     }
     public String toString(){
         return "Tree: " + getName() + ", Height: " + this.height + ", Price: " + getPrice() + "€.";
