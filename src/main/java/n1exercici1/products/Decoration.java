@@ -18,7 +18,10 @@ public class Decoration extends Product{
         this.material = madeOf.name().toLowerCase();
     }
     public String toString(){
-        return "Decoration: " + getName() + ", Made of: " + getMaterial() + ", Price: " + getPrice() + "€.";
+        return "Decoration: " + getName() + ", Made of: " + this.material + ", Price: " + getPrice() + "€.";
+    }
+    public String decorationTable(){
+        return "Decoration  " + getName() + "       " + this.material + "       " + getPrice() + "€.";
     }
 
 }

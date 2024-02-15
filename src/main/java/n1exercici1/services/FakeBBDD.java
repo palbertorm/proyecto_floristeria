@@ -1,6 +1,6 @@
 package n1exercici1.services;
 
-import n1exercici1.FlowerShop;
+import n1exercici1.Sale;
 import n1exercici1.products.Decoration;
 import n1exercici1.products.Flower;
 import n1exercici1.products.Product;
@@ -27,8 +27,11 @@ public class FakeBBDD {
         productList.add(new Decoration("Espejo",69.99, MadeOf.WOOD));
         return productList;
     }
-    public static void returnProductList(List<Product> productList){
 
+    public static List<Sale> getSaleList(){
+        List<Sale> saleList = new ArrayList<>();
+        saleList.add(new Sale(getProductList(),155));
+        return saleList;
     }
 
 }

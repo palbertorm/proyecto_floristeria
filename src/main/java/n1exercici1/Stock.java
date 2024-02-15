@@ -1,7 +1,8 @@
-package n1exercici1.services;
+package n1exercici1;
 
 import n1exercici1.exceptions.ProductDoesNotExistsException;
 import n1exercici1.products.*;
+import n1exercici1.services.DAOService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,20 +14,20 @@ public class Stock {
     private final List<Tree> treeStock;
     private final List<Flower> flowerStock;
     private final List<Decoration> decorationStock;
-    private List<Product> productStock;
+    private final List<Product> productStock;
     private double stockValue;
 
-    private Stock (String shopName, DAOService service){
+    private Stock (DAOService service, String flowerShopName){
         this.treeStock = new ArrayList<>();
         this.flowerStock = new ArrayList<>();
         this.decorationStock = new ArrayList<>();
-        List<Product> productStock = service.getProductList(shopName);
+        List<Product> productStock = service.getProductList(flowerShopName);
         if (productStock!=null) productStock.forEach(this::addProduct);
         this.productStock = productStock;
         this.initStock = true;
     }
-    public static Stock getStock (String shopName, DAOService service){
-        if (stock == null) stock = new Stock(shopName, service);
+    public static Stock getStock (DAOService service, String flowerShopName){
+        if (stock == null) stock = new Stock(service, flowerShopName);
         return stock;
     }
     public List<Product> getProductStock (){
@@ -56,7 +57,7 @@ public class Stock {
         }
         if(this.initStock) System.out.println("Product stocked."); // IMPIDE QUE SE LANZE EL MENSAJE PRODUCTO AÑADIDO HASTA QUE SE HAYA CARGADO LA BBDD
         updateStockValue(product, "add");
-        //updateProductStock(product, "add");
+        updateProductStock(product, "add");
     }
     public void removeProduct (Product product){
         try {
@@ -68,10 +69,13 @@ public class Stock {
             }
             System.out.println("Product removed");
             updateStockValue(product, "remove");
-            //updateProductStock(product, "remove");
+            updateProductStock(product, "remove");
         } catch (ProductDoesNotExistsException e){
             System.out.println(e.getMessage());
         }
+    }
+    public Product findProduct(String productName){
+        return this.productStock.stream().filter(product -> product.getName().equalsIgnoreCase(productName)).findFirst().orElse(null);
     }
     private void updateStockValue(Product product, String action){
         stockValue += (action.equals("add") ? product.getPrice() : -product.getPrice());

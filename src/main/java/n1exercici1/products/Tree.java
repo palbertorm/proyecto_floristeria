@@ -15,9 +15,11 @@ public class Tree extends Product{
     public void setHeight(double height){
         this.height = height;
     }
-
     public String toString(){
         return "Tree: " + getName() + ", Height: " + this.height + ", Price: " + getPrice() + "€.";
+    }
+    public String treeTable(){
+        return "Tree       " + getName() + "  " + this.height + "             " + getPrice() + "€.";
     }
 
 }

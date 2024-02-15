@@ -1,9 +1,9 @@
 package n1exercici1;
 
+import n1exercici1.exceptions.ProductDoesNotExistsException;
 import n1exercici1.products.*;
 import n1exercici1.products.enums.MadeOf;
 import n1exercici1.services.DAOService;
-import n1exercici1.services.Stock;
 
 import java.util.Comparator;
 import java.util.List;
@@ -13,20 +13,26 @@ public class FlowerShop {
     private final DAOService service;
     private static FlowerShop flowerShop;
     private final String flowerShopName;
-    private final Stock stock;
+    private Stock stock;
+    private SalesManager salesManager;
+    private boolean shopExists = true;
 
     private FlowerShop (String flowerShopName){
         this.service = new DAOService();
         this.flowerShopName = flowerShopName;
-        this.stock = Stock.getStock(flowerShopName, service);
-        //FALTAN VENTAS
+        if (service.compareShopName(flowerShopName)){
+            this.stock = Stock.getStock(service, flowerShopName);
+            this.salesManager = SalesManager.getSalesManager(service, flowerShopName);
+        } else {
+            this.shopExists = false;
+        }
     }
     public static FlowerShop openFlowerShop(String flowerShopName){
         if (flowerShop == null) flowerShop = new FlowerShop(flowerShopName);
         return flowerShop;
     }
     public boolean seeIfFlowerShopExists(){
-        return stock.getProductStock()!=null;
+        return this.shopExists;
     }
 
     // TREE'S METHOD
@@ -36,12 +42,9 @@ public class FlowerShop {
     public void printTreeStock(){
         stock.getTreeStock().forEach(System.out::println);
     }
-    public Tree findTree(String productName){
-        return stock.getTreeStock().stream().filter(tree -> tree.getName().equalsIgnoreCase(productName)).findFirst().orElse(null);
-    }
     public void removeTree(String productName){
         try{
-            stock.removeProduct(findTree(productName));
+            stock.removeProduct(findProduct(productName));
         } catch (NullPointerException e){
             System.out.println("This tree is not stocked.");
         }
@@ -54,12 +57,9 @@ public class FlowerShop {
     public void printFlowerStock(){
         stock.getFlowerStock().forEach(System.out::println);
     }
-    public Flower findFlower(String productName){
-        return stock.getFlowerStock().stream().filter(flower -> flower.getName().equalsIgnoreCase(productName)).findFirst().orElse(null);
-    }
     public void removeFlower(String productName){
         try {
-            stock.removeProduct(findFlower(productName));
+            stock.removeProduct(findProduct(productName));
         } catch (NullPointerException e){
             System.out.println("This flower is not stocked");
         }
@@ -72,12 +72,9 @@ public class FlowerShop {
     public void printDecorationStock(){
         stock.getDecorationStock().forEach(System.out::println);
     }
-    public Decoration findDecoration(String productName){
-        return stock.getDecorationStock().stream().filter(decoration -> decoration.getName().equalsIgnoreCase(productName)).findFirst().orElse(null);
-    }
     public void removeDecoration(String productName){
         try {
-            stock.removeProduct(findDecoration(productName));
+            stock.removeProduct(findProduct(productName));
         } catch (NullPointerException e){
             System.out.println("This decoration is not stocked");
         }
@@ -92,10 +89,43 @@ public class FlowerShop {
         System.out.println("The actual value of the " + flowerShopName + " shop is " + stock.getStockValue() + "€.");
     }
 
-    public void saveProductList(){
+    // SALE'S METHOD
+    public Product getProduct (String productName) throws ProductDoesNotExistsException {
+        Product product = findProduct(productName);
+        if (product==null) throw new ProductDoesNotExistsException("This product doesn't exist or is out of stock.");
+        else stock.removeProduct(product);
+        return product;
+    }
+    public Product findProduct(String productName){
+        return stock.findProduct(productName);
+    }
+    public void returnProduct (List<Product> cart){
+        cart.forEach(stock::addProduct);
+    }
+    public void processSale(List<Product> cart){
+        double salePrice = cart.stream().mapToDouble(Product::getPrice).sum();
+        salesManager.manageTheCart(cart, salePrice);
+    }
+    public void printSalesHistory(){
+        salesManager.printSalesHistory();
+    }
+    public void printEarnedMoney(){
+        System.out.println("The store's earned money is " + salesManager.getEarnedMoney() + "€.");
+    }
+    public void printSale(int idSale){
+        System.out.println(salesManager.getSalesHistoryList().get(idSale));
+    }
+    public void printSaleTicket(int idSale){
+        salesManager.printTcket(idSale);
+    }
+
+    // WRAP UP METHOD
+    public void saveChanges(){
         List<Product> productList = stock.getProductStock();
         productList.sort(Comparator.comparingInt(Product::getIdProduct));
-        service.returnProductList(productList);
+        List<Sale> saleList = salesManager.getSalesHistoryList();
+        service.exportProductList(productList);
+        service.exportSaleList(saleList);
     }
 
 }

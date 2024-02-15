@@ -3,7 +3,7 @@ package n1exercici1;
 import n1exercici1.exceptions.NotValidOptionException;
 import n1exercici1.exceptions.OnlyYesNoException;
 import n1exercici1.exceptions.ProductAlreadyExistsException;
-import n1exercici1.products.Flower;
+import n1exercici1.exceptions.ProductDoesNotExistsException;
 import n1exercici1.products.Product;
 import n1exercici1.products.enums.MadeOf;
 
@@ -21,9 +21,11 @@ public class App {
         if (flowerShop.seeIfFlowerShopExists()){
             runMainMenu(flowerShop);
         } else {
-            System.out.println("\nThis flower shop is not included in the database,\n" +
-                    " please, consider to create first the database\n " +
-                    "or check if the flowershop name is correct.");
+            System.out.println("""
+
+                    This flower shop is not included in the database,
+                     please, consider to create first the database
+                     or check if the flower shop name is correct.""");
         }
     }
 
@@ -46,44 +48,29 @@ public class App {
         String productName;
         do {
             option = askMenuOption(addProductMenu(),3);
-            try {
-                switch (option) {
-                    case 1 -> {
-                        productName = askName();
-                        seeIfItExists(flowerShop, productName, "tree");
-                        flowerShop.addTree(productName, askPrice(), askHeight());
+            if (option!=0){
+                productName = askProductName();
+                try {
+                    seeIfItExists(flowerShop, productName);
+                    switch (option) {
+                        case 1 -> flowerShop.addTree(productName, askProductPrice(), askHeight());
+                        case 2 -> flowerShop.addFlower(productName, askProductPrice(), askColor());
+                        case 3 -> flowerShop.addDecoration(productName, askProductPrice(), askMaterial());
                     }
-                    case 2 -> {
-                        productName = askName();
-                        seeIfItExists(flowerShop, productName, "flower");
-                        flowerShop.addFlower(productName, askPrice(), askColor());
-                    }
-                    case 3 -> {
-                        productName = askName();
-                        seeIfItExists(flowerShop, productName, "decoration");
-                        flowerShop.addDecoration(productName, askPrice(), askMaterial());
-                    }
+                } catch (ProductAlreadyExistsException e){
+                    System.out.println(e.getMessage());
                 }
-            } catch (ProductAlreadyExistsException e){
-                System.out.println(e.getMessage());
             }
         } while (option!=0);
     }
     private static void runRemoveProduct(FlowerShop flowerShop){
         int option;
-        String productName;
         do {
             option = askMenuOption(removeProductMenu(),3);
             switch (option) {
-                case 1 -> {
-                    flowerShop.removeTree(askName());
-                }
-                case 2 -> {
-                    flowerShop.removeFlower(askName());
-                }
-                case 3 -> {
-                    flowerShop.removeDecoration(askName());
-                }
+                case 1 -> flowerShop.removeTree(askProductName());
+                case 2 -> flowerShop.removeFlower(askProductName());
+                case 3 -> flowerShop.removeDecoration(askProductName());
             }
         } while (option!=0);
     }
@@ -115,40 +102,66 @@ public class App {
     private static void runSalesManager(FlowerShop flowerShop){
         int option;
         do {
-            option = askMenuOption(salesMenu(),4);
+            option = askMenuOption(salesMenu(),5);
             switch (option) {
                 case 1 -> runSalesMenu(flowerShop);
-                case 2 -> System.out.println("OOOOOOOOOOOOOOOOO");
-                case 3 -> System.out.println("OOOOOOOOOOOOOOOOO");
-                case 4 -> System.out.println("OOOOOOOOOOOOOOOOO");
+                case 2 -> flowerShop.printSalesHistory();
+                case 3 -> flowerShop.printEarnedMoney();
+                case 4 -> flowerShop.printSale(askSale());
+                case 5 -> flowerShop.printSaleTicket(askSale());
             }
         } while (option!=0);
     }
     private static void runSalesMenu(FlowerShop flowerShop){
+        List<Product> cart = new ArrayList<>();
         int option;
-        List<Product> cart = new ArrayList<Product>();
         do {
             option = askMenuOption(newSaleMenu(),3);
             switch (option) {
-                case 1 -> System.out.println("OOOOOOOOOOOOOOOOO");
-                case 2 -> System.out.println("OOOOOOOOOOOOOOOOO");
-                case 3 -> System.out.println("OOOOOOOOOOOOOOOOO");
-                case 0 -> option = confirmExiting();
+                case 1 -> cart = addToCart(flowerShop, cart);
+                case 2 -> cart = removeFromCart(cart);
+                case 3 -> flowerShop.processSale(cart);
+                case 0 -> option = confirmExiting("Are you sure you want to cancel the sale? (YES/NO): ");
             }
         } while (option!=0 && option!=3);
+        if (option==0) returnProductsToStock(flowerShop, cart);
+    }
+    private static List<Product> addToCart (FlowerShop flowerShop, List<Product> cart){
+        try {
+            cart.add(flowerShop.getProduct(askProductName()));
+        } catch (ProductDoesNotExistsException e) {
+            System.out.println(e.getMessage());
+        }
+        return cart;
+    }
+    private static List<Product> removeFromCart (List<Product> cart){
+        try {
+            cart.remove(getProductFromCart(cart, askProductName()));
+        } catch (ProductDoesNotExistsException e) {
+            System.out.println(e.getMessage());
+        }
+        return cart;
+    }
+    private static Product getProductFromCart(List<Product> cart, String productName) throws ProductDoesNotExistsException {
+        return cart.stream().filter(product -> product.getName().equalsIgnoreCase(productName)).findFirst()
+                .orElseThrow(() -> new ProductDoesNotExistsException("This product is not in the cart."));
+    }
+    private static void returnProductsToStock(FlowerShop flowerShop, List<Product> cart){
+        flowerShop.returnProduct(cart);
     }
     private static void runWrapUp(FlowerShop flowerShop){
-        flowerShop.saveProductList();
+        flowerShop.saveChanges();
+
     }
 
     // DATA INPUT METHODS
     private static FlowerShop askShopName (){
         return FlowerShop.openFlowerShop(askString("Enter the shop's name: "));
     }
-    private static String askName(){
+    private static String askProductName(){
         return askString("Enter the product's name: ");
     }
-    private static double askPrice(){
+    private static double askProductPrice(){
         return askDouble("Enter the product's price: ");
     }
     private static double askHeight(){
@@ -163,6 +176,9 @@ public class App {
             option = askMenuOption(materialTypeMenu(),1);
         } while (option!=0 && option!=1);
         return (option==0 ? MadeOf.WOOD : MadeOf.PLASTIC);
+    }
+    private static int askSale(){
+        return askInt("Enter the sale's ID: ");
     }
 
     // ASK MENU OPTION AND VALIDATOR METHODS
@@ -181,21 +197,17 @@ public class App {
             throw new NotValidOptionException("This option does not exist.");
         }
     }
-    private static void seeIfItExists(FlowerShop flowerShop, String productName, String productType) throws ProductAlreadyExistsException{
-        boolean exists = false;
-        switch (productType.toLowerCase()){
-            case "tree" -> exists = flowerShop.findTree(productName)!=null;
-            case "flower" -> exists = flowerShop.findFlower(productName)!=null;
-            case "decoration" -> exists = flowerShop.findDecoration(productName)!=null;
+    private static void seeIfItExists(FlowerShop flowerShop, String productName) throws ProductAlreadyExistsException{
+        if (flowerShop.findProduct(productName)!=null) {
+            throw new ProductAlreadyExistsException("This product is already stocked");
         }
-        if (exists) throw new ProductAlreadyExistsException("This " + productType + " is already stocked");
     }
-    private static int confirmExiting(){
+    private static int confirmExiting(String message){
         int option = 0;
         boolean correct = false;
         do {
             try {
-                option = yesNoValidator(askString("Are you sure you want to cancel the sale? (YES/NO): "));
+                option = yesNoValidator(askString(message));
                 correct = true;
             } catch (OnlyYesNoException e){
                 System.out.println(e.getMessage());
@@ -220,7 +232,7 @@ public class App {
                 (2). Remove a product
                 (3). Enter to store's info menu
                 (4). Enter to sale's menu
-                (0). Close app""";
+                (0). Close app and save changes""";
     }
     private static String addProductMenu(){
         return """
