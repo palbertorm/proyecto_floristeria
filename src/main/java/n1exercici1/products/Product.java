@@ -10,7 +10,7 @@ public abstract class Product {
     public Product (String name, double price){
         this.name = name;
         this.price = price;
-        this.idProduct += idCounter++; //VER SI FUNCIONA O HAY QUE EXTRAER EL idCounter++;
+        this.idProduct += idCounter++;
     }
 
     public int getIdProduct(){
@@ -23,5 +23,6 @@ public abstract class Product {
         return this.price;
     }
     public abstract String toString();
+    public abstract String toTable();
 
 }

@@ -15,7 +15,7 @@ public class Flower extends Product{
     public String toString(){
         return "Flower: " + getName() + ", Color: " + this.color + ", Price: " + getPrice() + "€.";
     }
-    public String flowerTable(){
+    public String toTable(){
         return "Flower     " + getName() + "    " + this.color + "      " + getPrice() + "€.";
     }
 

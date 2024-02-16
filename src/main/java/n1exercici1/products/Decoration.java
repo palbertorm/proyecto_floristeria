@@ -17,7 +17,7 @@ public class Decoration extends Product{
     public String toString(){
         return "Decoration: " + getName() + ", Made of: " + this.material + ", Price: " + getPrice() + "€.";
     }
-    public String decorationTable(){
+    public String toTable(){
         return "Decoration  " + getName() + "       " + this.material + "       " + getPrice() + "€.";
     }
 

@@ -1,7 +1,10 @@
 package n1exercici1.services;
 
 import n1exercici1.exceptions.ProductDoesNotExistsException;
-import n1exercici1.products.*;
+import n1exercici1.products.Decoration;
+import n1exercici1.products.Flower;
+import n1exercici1.products.Product;
+import n1exercici1.products.Tree;
 
 import java.util.ArrayList;
 import java.util.List;

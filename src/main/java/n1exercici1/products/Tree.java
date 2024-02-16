@@ -15,7 +15,7 @@ public class Tree extends Product{
     public String toString(){
         return "Tree: " + getName() + ", Height: " + this.height + ", Price: " + getPrice() + "€.";
     }
-    public String treeTable(){
+    public String toTable(){
         return "Tree       " + getName() + "  " + this.height + "             " + getPrice() + "€.";
     }
 

@@ -4,7 +4,7 @@ import n1exercici1.exceptions.ProductDoesNotExistsException;
 import n1exercici1.products.*;
 import n1exercici1.products.enums.MadeOf;
 import n1exercici1.services.DAOService;
-import n1exercici1.services.Sale;
+import n1exercici1.sales.Sale;
 import n1exercici1.services.SalesManager;
 import n1exercici1.services.Stock;
 
@@ -131,8 +131,8 @@ public class FlowerShop {
         productList.sort(Comparator.comparingInt(Product::getIdProduct));
         List<Sale> saleList = salesManager.getSalesHistoryList();
 
-        service.exportProductList(productList, this.flowerShopName);
-        service.exportSaleList(saleList, this.flowerShopName);
+        service.exportProductList(productList);
+        service.exportSaleList(saleList);
     }
 
 }

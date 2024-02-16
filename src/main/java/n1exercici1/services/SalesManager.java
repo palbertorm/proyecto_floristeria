@@ -1,9 +1,12 @@
 package n1exercici1.services;
 
-import n1exercici1.connections.TxtBBDD;
 import n1exercici1.products.Product;
+import n1exercici1.sales.Sale;
+import n1exercici1.sales.TicketPrinter;
 
+import java.util.Calendar;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 public class SalesManager {
@@ -21,7 +24,7 @@ public class SalesManager {
         return salesManager;
     }
     private void calculateTotalSalesValue(){
-        this.earnedMoney = this.salesHistoryList.stream().mapToDouble(Sale::getSalePrice).sum();
+        this.earnedMoney = this.salesHistoryList.stream().mapToDouble(Sale::getSaleAmount).sum();
     }
 
     public List<Sale> getSalesHistoryList() {
@@ -33,10 +36,11 @@ public class SalesManager {
 
     public void manageTheCart(List<Product> cart, double salePrice){
         cart.sort(Comparator.comparingInt(Product::getIdProduct));
-        addSale(new Sale(salePrice, getProductsFromCart(cart)));
+        Date date = (Calendar.getInstance().getTime());
+        addSale(new Sale(salePrice, date , getProductsFromCart(cart)));
     }
     private List<String> getProductsFromCart(List<Product> cart){
-        return cart.stream().map(Product::toString).toList();
+        return cart.stream().map(Product::toTable).toList();
     }
     private void addSale(Sale sale) {
         this.salesHistoryList.add(sale);
@@ -44,15 +48,15 @@ public class SalesManager {
         updateEarnedMoney(sale);
     }
     private void updateEarnedMoney(Sale sale){
-        this.earnedMoney += sale.getSalePrice();
+        this.earnedMoney += sale.getSaleAmount();
     }
     public void printSalesHistory() {
         this.salesHistoryList.forEach(System.out::println);
     }
     public void printTcket(int idSale){
-        Sale ticketSale = this.salesHistoryList.get(idSale);
+        String ticketSale = this.salesHistoryList.get(idSale).generateTicket();
         System.out.println(ticketSale);
-        TxtBBDD.printSaleToTXT(ticketSale);
+        TicketPrinter.printTicketToTXT(ticketSale, idSale);
         System.out.println("\nThe ticket has been printed.");
     }
 }

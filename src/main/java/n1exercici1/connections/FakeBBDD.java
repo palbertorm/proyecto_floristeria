@@ -5,15 +5,16 @@ import n1exercici1.products.Flower;
 import n1exercici1.products.Product;
 import n1exercici1.products.Tree;
 import n1exercici1.products.enums.MadeOf;
-import n1exercici1.services.Sale;
+import n1exercici1.sales.Sale;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FakeBBDD {
 
 
-    public static List<String> getFlowerShopList (){
+    public static List<String> getFlowerShopList (String shopName){
         List<String> flowerShopList = new ArrayList<>();
         flowerShopList.add("Hola");
         flowerShopList.add("Adios");
@@ -31,7 +32,7 @@ public class FakeBBDD {
     public static List<Sale> getSaleList(){
         List<Sale> saleList = new ArrayList<>();
         List<String> productList = new ArrayList<>();
-        saleList.add(new Sale(155,productList));
+        saleList.add(new Sale(155, new Date(2024-2-15),productList));
         return saleList;
     }
 
