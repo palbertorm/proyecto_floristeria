@@ -5,17 +5,29 @@ import n1exercici1.connections.TxtBBDD;
 import n1exercici1.products.Product;
 import n1exercici1.sales.Sale;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class DAOService {
 
     private List<Product> productList;
     private List<Sale> saleList;
-    private List<String> flowerShopList;
 
-    public boolean compareShopName (String shopName){
-        flowerShopList = TxtBBDD.getFileList();
-        return flowerShopList.stream().anyMatch(shop -> shop.contains(shopName));
+    private static final String directory = "";
+
+    public boolean checkShopName (String shopName){
+        boolean exists;
+        try (Stream<Path> files = Files.walk(Paths.get(directory))){
+            exists = files.map(Path::getFileName).map(Path::toString).anyMatch(fileName -> fileName.equalsIgnoreCase(shopName));
+        } catch (IOException e){
+            exists = false;
+        }
+        return exists;
     }
 
     public List<Product> getProductList (String flowerShopName){

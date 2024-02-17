@@ -23,7 +23,7 @@ public class FlowerShop {
     private FlowerShop (String flowerShopName){
         this.service = new DAOService();
         this.flowerShopName = flowerShopName;
-        if (service.compareShopName(flowerShopName)){
+        if (service.checkShopName(flowerShopName)){
             this.stock = Stock.getStock(service, flowerShopName);
             this.salesManager = SalesManager.getSalesManager(service, flowerShopName);
         } else {

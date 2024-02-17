@@ -18,23 +18,6 @@ public class TxtBBDD {
     private static String stockDirectory;
     private static String salesDirectory;
 
-    public static List<String> getFileList (){
-        List<String> fileList = null;
-        File directory = new File("");
-        if (directory.isDirectory()){
-            File[] files = directory.listFiles();
-            if (files != null) {
-                fileList = new ArrayList<>();
-                for (File file : files){
-                    if (file.isFile()) {
-                        fileList.add(file.getName());
-                    }
-                }
-            }
-        }
-        return fileList;
-    }
-
     public static List<Product> getProductList(String txtFileName){
         stockDirectory = txtFileName;
         List<Product> productList = new ArrayList<>();
