@@ -1,6 +1,6 @@
-package n1exercici1.products;
+package n2exercici1.products;
 
-public class Flower extends Product{
+public class Flower extends Product {
 
     private final String color;
 

@@ -1,6 +1,6 @@
-package n1exercici1.products;
+package n2exercici1.products;
 
-public class Tree extends Product{
+public class Tree extends Product {
 
     private final double height;
 

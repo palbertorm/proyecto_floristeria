@@ -1,12 +1,15 @@
-package n1exercici1;
+package n2exercici1;
 
-import n1exercici1.exceptions.ProductDoesNotExistsException;
-import n1exercici1.products.*;
-import n1exercici1.products.enums.MadeOf;
-import n1exercici1.services.DAOService;
-import n1exercici1.sales.Sale;
-import n1exercici1.services.SalesManager;
-import n1exercici1.services.Stock;
+import n2exercici1.exceptions.ProductDoesNotExistsException;
+import n2exercici1.products.Decoration;
+import n2exercici1.products.Flower;
+import n2exercici1.products.Product;
+import n2exercici1.products.Tree;
+import n2exercici1.products.enums.MadeOf;
+import n2exercici1.sales.Sale;
+import n2exercici1.services.DAOService;
+import n2exercici1.services.SalesManager;
+import n2exercici1.services.Stock;
 
 import java.util.Comparator;
 import java.util.List;
@@ -24,8 +27,8 @@ public class FlowerShop {
         this.service = new DAOService();
         this.flowerShopName = flowerShopName;
         if (service.checkShopName(flowerShopName)){
-            this.stock = Stock.getStock(service, flowerShopName);
-            this.salesManager = SalesManager.getSalesManager(service, flowerShopName);
+            this.stock = Stock.getStock(service);
+            this.salesManager = SalesManager.getSalesManager(service);
             if (!(stock.getInitStock() && salesManager.getInitSalesManager())){
                 this.shopExists = false;
             }

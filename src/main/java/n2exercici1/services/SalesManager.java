@@ -1,8 +1,8 @@
-package n1exercici1.services;
+package n2exercici1.services;
 
-import n1exercici1.products.Product;
-import n1exercici1.sales.Sale;
-import n1exercici1.sales.TicketPrinter;
+import n2exercici1.products.Product;
+import n2exercici1.sales.Sale;
+import n2exercici1.sales.TicketPrinter;
 
 import java.util.Calendar;
 import java.util.Comparator;
@@ -16,9 +16,9 @@ public class SalesManager {
     private List<Sale> salesHistoryList;
     private double earnedMoney;
 
-    private SalesManager(DAOService service, String flowerShopName) {
+    private SalesManager(DAOService service) {
         try {
-            this.salesHistoryList = service.getSaleList(flowerShopName);
+            this.salesHistoryList = service.getSaleList();
             if (salesHistoryList.isEmpty()) System.out.println("This store doesn't contain a history of sales yet");
             calculateTotalSalesValue();
             this.initSalesManager = true;
@@ -26,8 +26,8 @@ public class SalesManager {
             this.initSalesManager = false;
         }
     }
-    public static SalesManager getSalesManager(DAOService service, String flowerShopName) {
-        if (salesManager == null) salesManager = new SalesManager(service, flowerShopName);
+    public static SalesManager getSalesManager(DAOService service) {
+        if (salesManager == null) salesManager = new SalesManager(service);
         return salesManager;
     }
     private void calculateTotalSalesValue(){

@@ -1,8 +1,8 @@
-package n1exercici1.products;
+package n2exercici1.products;
 
-import n1exercici1.products.enums.MadeOf;
+import n2exercici1.products.enums.MadeOf;
 
-public class Decoration extends Product{
+public class Decoration extends Product {
 
     private final String material;
 

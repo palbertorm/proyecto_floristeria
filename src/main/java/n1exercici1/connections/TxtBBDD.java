@@ -53,22 +53,15 @@ public class TxtBBDD {
                 if (!line.trim().isEmpty()) txtLines.add(line.split(";"));
             }
         } catch (IOException e) {
-            System.out.println("Database does not exist or wrong path provided.");
+            txtLines = null;
         }
         return txtLines;
     }
 
     public static void returnProductList(List<Product> productList){
         try (PrintWriter writer = new PrintWriter(new FileWriter(stockDirectory))){
-            String productAttribute;
             for (Product product : productList) {
-                switch (product) {
-                    case Tree tree -> productAttribute = String.valueOf(tree.getHeight());
-                    case Flower flower -> productAttribute = flower.getColor();
-                    case Decoration decoration -> productAttribute = decoration.getMaterial();
-                    default -> productAttribute = "";
-                }
-                writer.println(product.getIdProduct() + ";" + product.getType() + ";" + product.getName() + ";" + product.getPrice() + ";" + productAttribute);
+                writer.println(product.getIdProduct() + ";" + product.getType() + ";" + product.getName() + ";" + product.getPrice() + ";" + product.getAttribute());
             }
         } catch (IOException e){
             System.out.println("The changes have not been saved at the database. Wrong path provided.");

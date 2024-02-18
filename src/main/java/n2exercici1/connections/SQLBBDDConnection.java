@@ -1,10 +1,10 @@
-package n1exercici1.connections;
+package n2exercici1.connections;
+
+import static n2exercici1.services.InputData.askString;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import static n1exercici1.services.InputData.askString;
 
 public class SQLBBDDConnection {
 
@@ -17,7 +17,7 @@ public class SQLBBDDConnection {
         if (!initConnection) askData(sqlFileName);
     }
     private static void askData(String sqlFileName){
-        url = "jdbc:mysql://localhost:3306/"+sqlFileName.toLowerCase();
+        url = "jdbc:mysql://localhost:3306/"+sqlFileName;
         user = askString("Introduce your username: ");
         password = askString("Introduce your password: ");
         initConnection = true;

@@ -1,10 +1,10 @@
-package n1exercici1;
+package n3exercici1;
 
-import n1exercici1.exceptions.NotValidOptionException;
-import n1exercici1.exceptions.OnlyYesNoException;
-import n1exercici1.exceptions.ProductDoesNotExistsException;
-import n1exercici1.products.Product;
-import n1exercici1.products.enums.MadeOf;
+import n3exercici1.exceptions.NotValidOptionException;
+import n3exercici1.exceptions.OnlyYesNoException;
+import n3exercici1.exceptions.ProductDoesNotExistsException;
+import n3exercici1.products.Product;
+import n3exercici1.products.enums.MadeOf;
 
 import java.util.ArrayList;
 import java.util.List;

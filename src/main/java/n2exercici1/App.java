@@ -1,15 +1,15 @@
-package n1exercici1;
+package n2exercici1;
 
-import n1exercici1.exceptions.NotValidOptionException;
-import n1exercici1.exceptions.OnlyYesNoException;
-import n1exercici1.exceptions.ProductDoesNotExistsException;
-import n1exercici1.products.Product;
-import n1exercici1.products.enums.MadeOf;
+import n2exercici1.exceptions.NotValidOptionException;
+import n2exercici1.exceptions.OnlyYesNoException;
+import n2exercici1.exceptions.ProductDoesNotExistsException;
+import n2exercici1.products.Product;
+import n2exercici1.products.enums.MadeOf;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static n1exercici1.services.InputData.*;
+import static n2exercici1.services.InputData.*;
 
 public class App {
 
