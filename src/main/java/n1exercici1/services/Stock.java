@@ -16,13 +16,12 @@ public class Stock {
     private final List<Tree> treeStock = new ArrayList<>();
     private final List<Flower> flowerStock = new ArrayList<>();
     private final List<Decoration> decorationStock = new ArrayList<>();
-    private final List<Product> productStock;
+    private final List<Product> productStock = new ArrayList<>();
     private double stockValue;
 
     private Stock (DAOService service, String flowerShopName){
-        List<Product> productStock = service.getProductList(flowerShopName);
-        if (productStock!=null) productStock.forEach(this::addProduct);
-        this.productStock = productStock;
+        new ArrayList<>(service.getProductList(flowerShopName)).forEach(this::addProduct);
+        if (productStock.isEmpty()) System.out.println("This store has zero stock in it");
         this.initStock = true;
     }
     public static Stock getStock (DAOService service, String flowerShopName){
@@ -72,8 +71,8 @@ public class Stock {
             System.out.println(e.getMessage());
         }
     }
-    public Product findProduct(String productName){
-        return this.productStock.stream().filter(product -> product.getName().equalsIgnoreCase(productName))
+    public Product findProduct(String productName, String type){
+        return this.productStock.stream().filter(product -> product.getName().equalsIgnoreCase(productName) && product.getType().equalsIgnoreCase(type))
                 .findFirst().orElse(null);
     }
     private void wrapStockChanges(Product product, String action){
@@ -83,13 +82,13 @@ public class Stock {
         updateProductStock(product, action);
     }
     private void updateStockValue(Product product, String action){
-        stockValue += (action.equals("add") ? product.getPrice() : -product.getPrice());
+        this.stockValue += (action.equals("add") ? product.getPrice() : -product.getPrice());
     }
     private void updateProductStock(Product product, String action){
         if (action.equals("add")) {
-            productStock.add(product);
+            this.productStock.add(product);
         } else {
-            productStock.remove(product);
+            this.productStock.remove(product);
         }
     }
 

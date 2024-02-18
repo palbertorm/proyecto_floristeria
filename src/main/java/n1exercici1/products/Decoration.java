@@ -14,6 +14,9 @@ public class Decoration extends Product{
     public String getMaterial(){
         return this.material;
     }
+    public String getType(){
+        return "DECORATION";
+    }
     public String toString(){
         return "Decoration: " + getName() + ", Made of: " + this.material + ", Price: " + getPrice() + "€.";
     }

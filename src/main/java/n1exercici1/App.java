@@ -43,15 +43,19 @@ public class App {
         } while (menuOption!=0);
     }
     private static void runAddProduct(FlowerShop flowerShop){
-        int option;
-        do {
-            option = askMenuOption(addProductMenu(),3);
-            switch (option) {
-                case 1 -> flowerShop.addTree(askProductName(), askProductPrice(), askHeight());
-                case 2 -> flowerShop.addFlower(askProductName(), askProductPrice(), askColor());
-                case 3 -> flowerShop.addDecoration(askProductName(), askProductPrice(), askMaterial());
+        String productName;
+        int option = askMenuOption(addProductMenu(),3);
+        while (option!=0) {
+            productName = askProductName();
+            if (!returnIfAlreadyStocked(flowerShop, productName, option)){
+                switch (option) {
+                    case 1 -> flowerShop.addTree(productName, askProductPrice(), askHeight());
+                    case 2 -> flowerShop.addFlower(productName, askProductPrice(), askColor());
+                    case 3 -> flowerShop.addDecoration(productName, askProductPrice(), askMaterial());
+                }
             }
-        } while (option!=0);
+            option = askMenuOption(addProductMenu(),3);
+        }
     }
     private static void runRemoveProduct(FlowerShop flowerShop){
         int option;
@@ -92,13 +96,12 @@ public class App {
     private static void runSalesManager(FlowerShop flowerShop){
         int option;
         do {
-            option = askMenuOption(salesMenu(),5);
+            option = askMenuOption(salesMenu(),4);
             switch (option) {
                 case 1 -> runSalesMenu(flowerShop);
                 case 2 -> flowerShop.printSalesHistory();
                 case 3 -> flowerShop.printEarnedMoney();
-                case 4 -> flowerShop.printSale(askSale());
-                case 5 -> flowerShop.printSaleTicket(askSale());
+                case 4 -> flowerShop.printSaleTicket(askSale());
             }
         } while (option!=0);
     }
@@ -106,19 +109,21 @@ public class App {
         List<Product> cart = new ArrayList<>();
         int option;
         do {
-            option = askMenuOption(newSaleMenu(),3);
+            option = askMenuOption(newSaleMenu(),5);
             switch (option) {
-                case 1 -> cart = addToCart(flowerShop, cart);
-                case 2 -> cart = removeFromCart(cart);
-                case 3 -> flowerShop.processSale(cart);
+                case 1 -> cart = addToCart(flowerShop, cart, "TREE");
+                case 2 -> cart = addToCart(flowerShop, cart, "FLOWER");
+                case 3 -> cart = addToCart(flowerShop, cart, "DECORATION");
+                case 4 -> cart = removeFromCart(cart);
+                case 5 -> flowerShop.processSale(cart);
                 case 0 -> option = confirmExiting("Are you sure you want to cancel the sale? (YES/NO): ");
             }
         } while (option!=0 && option!=3);
         if (option==0) returnProductsToStock(flowerShop, cart);
     }
-    private static List<Product> addToCart (FlowerShop flowerShop, List<Product> cart){
+    private static List<Product> addToCart (FlowerShop flowerShop, List<Product> cart, String productType){
         try {
-            cart.add(flowerShop.getProduct(askProductName()));
+            cart.add(flowerShop.getProduct(askProductName(), productType));
         } catch (ProductDoesNotExistsException e) {
             System.out.println(e.getMessage());
         }
@@ -186,6 +191,20 @@ public class App {
         if (menuOption<0 || menuOption>max) {
             throw new NotValidOptionException("This option does not exist.");
         }
+    }
+    private static boolean returnIfAlreadyStocked(FlowerShop flowerShop, String productName, int option) {
+        boolean exists = flowerShop.findProduct(productName, returnProductType(option))!=null;
+        if (exists) System.out.println("This product is already stocked");
+        return exists;
+    }
+    private static String returnProductType (int option){
+        String type = "";
+        switch (option){
+            case 1 -> type = "TREE";
+            case 2 -> type = "FLOWER";
+            case 3 -> type = "DECORATION";
+        }
+        return type;
     }
     private static int confirmExiting(String message){
         int option = 0;
@@ -275,9 +294,11 @@ public class App {
         return """
 
                  NEW SALE MENU:
-                (1). Add a product to cart
-                (2). Remove a product from cart
-                (3). Register the sale
+                (1). Add a tree to cart
+                (2). Add a flower to cart
+                (3). Add a decoration to cart
+                (4). Remove a product from cart
+                (5). Register the sale
                 (0). Cancel the new sale""";
     }
 }

@@ -3,7 +3,7 @@ package n1exercici1.products;
 public abstract class Product {
 
     private int idProduct;
-    private static int idCounter;
+    private static int idCounter=1;
     private final String name;
     private final double price;
 
@@ -22,6 +22,7 @@ public abstract class Product {
     public double getPrice(){
         return this.price;
     }
+    public abstract String getType();
     public abstract String toString();
     public abstract String toTable();
 

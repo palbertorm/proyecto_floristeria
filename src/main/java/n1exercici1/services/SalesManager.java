@@ -17,6 +17,7 @@ public class SalesManager {
 
     private SalesManager(DAOService service, String flowerShopName) {
         this.salesHistoryList = service.getSaleList(flowerShopName);
+        if (salesHistoryList.isEmpty()) System.out.println("This store doesn't contain a history of sales yet");
         calculateTotalSalesValue();
     }
     public static SalesManager getSalesManager(DAOService service, String flowerShopName) {
@@ -54,7 +55,7 @@ public class SalesManager {
         this.salesHistoryList.forEach(System.out::println);
     }
     public void printTcket(int idSale){
-        String ticketSale = this.salesHistoryList.get(idSale).generateTicket();
+        String ticketSale = this.salesHistoryList.get(idSale-1).generateTicket();
         System.out.println(ticketSale);
         TicketPrinter.printTicketToTXT(ticketSale, idSale);
         System.out.println("\nThe ticket has been printed.");

@@ -40,15 +40,14 @@ public class FlowerShop {
 
     // TREE'S METHOD
     public void addTree(String treeName, double treePrice, double treeHeigth){
-        if (findProduct(treeName)==null) stock.addProduct(new Tree(treeName, treePrice, treeHeigth));
-        else System.out.println("This product is already stocked");
+        stock.addProduct(new Tree(treeName, treePrice, treeHeigth));
     }
     public void printTreeStock(){
         stock.getTreeStock().forEach(System.out::println);
     }
     public void removeTree(String productName){
         try{
-            stock.removeProduct(findProduct(productName));
+            stock.removeProduct(findProduct(productName, "TREE"));
         } catch (NullPointerException e){
             System.out.println("This tree is not stocked.");
         }
@@ -56,15 +55,14 @@ public class FlowerShop {
 
     // FLOWER'S METHOD
     public void addFlower(String flowerName, double flowerPrice, String flowerColor){
-        if (findProduct(flowerName)==null) stock.addProduct(new Flower(flowerName, flowerPrice, flowerColor));
-        else System.out.println("This product is already stocked");
+        stock.addProduct(new Flower(flowerName, flowerPrice, flowerColor));
     }
     public void printFlowerStock(){
         stock.getFlowerStock().forEach(System.out::println);
     }
     public void removeFlower(String productName){
         try {
-            stock.removeProduct(findProduct(productName));
+            stock.removeProduct(findProduct(productName, "FLOWER"));
         } catch (NullPointerException e){
             System.out.println("This flower is not stocked");
         }
@@ -72,15 +70,14 @@ public class FlowerShop {
 
     // DECORATION'S METHOD
     public void addDecoration(String decorationName, double decorationPrice, MadeOf madeof) {
-        if (findProduct(decorationName)==null) stock.addProduct(new Decoration(decorationName, decorationPrice, madeof));
-        else System.out.println("This product is already stocked");
+        stock.addProduct(new Decoration(decorationName, decorationPrice, madeof));
     }
     public void printDecorationStock(){
         stock.getDecorationStock().forEach(System.out::println);
     }
     public void removeDecoration(String productName){
         try {
-            stock.removeProduct(findProduct(productName));
+            stock.removeProduct(findProduct(productName, "DECORATION"));
         } catch (NullPointerException e){
             System.out.println("This decoration is not stocked");
         }
@@ -92,18 +89,18 @@ public class FlowerShop {
                 "Decoration's quantity: " + stock.getDecorationStock().size() + ".");
     }
     public void printShopValue(){
-        System.out.println("The actual value of the " + flowerShopName + " shop is " + stock.getStockValue() + "€.");
+        System.out.println("The actual value of the " + flowerShopName + " shop is " + Math.round(stock.getStockValue()*100.0)/100.0 + "€.");
     }
 
     // SALE'S METHOD
-    public Product getProduct (String productName) throws ProductDoesNotExistsException {
-        Product product = findProduct(productName);
+    public Product getProduct (String productName, String productType) throws ProductDoesNotExistsException {
+        Product product = findProduct(productName, productType);
         if (product==null) throw new ProductDoesNotExistsException("This product doesn't exist or is out of stock.");
         else stock.removeProduct(product);
         return product;
     }
-    public Product findProduct(String productName){
-        return stock.findProduct(productName);
+    public Product findProduct(String productName, String productType){
+        return stock.findProduct(productName, productType);
     }
     public void returnProduct (List<Product> cart){
         cart.forEach(stock::addProduct);
@@ -118,9 +115,6 @@ public class FlowerShop {
     public void printEarnedMoney(){
         System.out.println("The store's earned money is " + salesManager.getEarnedMoney() + "€.");
     }
-    public void printSale(int idSale){
-        System.out.println(salesManager.getSalesHistoryList().get(idSale));
-    }
     public void printSaleTicket(int idSale){
         salesManager.printTcket(idSale);
     }
@@ -130,7 +124,6 @@ public class FlowerShop {
         List<Product> productList = stock.getProductStock();
         productList.sort(Comparator.comparingInt(Product::getIdProduct));
         List<Sale> saleList = salesManager.getSalesHistoryList();
-
         service.exportProductList(productList);
         service.exportSaleList(saleList);
     }

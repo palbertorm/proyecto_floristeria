@@ -6,7 +6,7 @@ import java.util.List;
 public class Sale {
 
     private int idSale;
-    private static int idCounter;
+    private static int idCounter = 1;
     private final double saleAmount;
     private final Date saleDate;
     private final List<String> productList;
@@ -41,7 +41,7 @@ public class Sale {
         for (String product : this.productList){
             productsSold.append(product).append("\n");
         }
-        return "Sale: " + this.idSale + ", Products sold:\n" +
-                productsSold + "\nTotal sell price: " + this.saleAmount + "€";
+        return "Sale: " + this.idSale + ", Date: " + this.saleDate + ", Products sold:\n" +
+                productsSold + "Total sell price: " + this.saleAmount + "€.\n";
     }
 }

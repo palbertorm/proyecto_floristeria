@@ -39,10 +39,9 @@ public class TxtBBDD {
     public static List<Sale> getSaleList (String txtFileName){
         salesDirectory = txtFileName;
         List<Sale> saleListFromTxt = new ArrayList<>();
-        List<String> productListFromTxt = new ArrayList<>();
         for (String[] s : getTxtLines(txtFileName)){
-            productListFromTxt.addAll(Arrays.asList(s).subList(3, s.length));
-            saleListFromTxt.add(new Sale(Integer.parseInt(s[1]), Date.valueOf(s[2]), productListFromTxt));
+            List<String> productListFromTxt = new ArrayList<>(Arrays.asList(s).subList(3, s.length));
+            saleListFromTxt.add(new Sale(Double.parseDouble(s[1]), Date.valueOf(s[2]), productListFromTxt));
         }
         return saleListFromTxt;
     }
@@ -51,32 +50,32 @@ public class TxtBBDD {
         try (BufferedReader reader = new BufferedReader(new FileReader(fileToRead))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                txtLines.add(line.split(";"));
+                if (!line.trim().isEmpty()) txtLines.add(line.split(";"));
             }
         } catch (IOException e) {
-            System.out.println("Database txt doesn't exists or wrong path provided");
+            System.out.println("Database does not exist or wrong path provided.");
         }
         return txtLines;
     }
 
     public static void returnProductList(List<Product> productList){
-        try (PrintWriter writer = new PrintWriter(new FileWriter(new File(stockDirectory).getAbsoluteFile(), true))){
+        try (PrintWriter writer = new PrintWriter(new FileWriter(stockDirectory))){
             String productAttribute;
-            for (Product product : productList){
-                switch (product){
+            for (Product product : productList) {
+                switch (product) {
                     case Tree tree -> productAttribute = String.valueOf(tree.getHeight());
                     case Flower flower -> productAttribute = flower.getColor();
                     case Decoration decoration -> productAttribute = decoration.getMaterial();
-                    default -> productAttribute="";
+                    default -> productAttribute = "";
                 }
-                writer.println(product.getIdProduct() + ";"  + product.getClass().getSimpleName() + ";" + product.getName()+ ";" + product.getPrice() + ";" + productAttribute);
+                writer.println(product.getIdProduct() + ";" + product.getType() + ";" + product.getName() + ";" + product.getPrice() + ";" + productAttribute);
             }
         } catch (IOException e){
             System.out.println("The changes have not been saved at the database. Wrong path provided.");
         }
     }
     public static void returnSaleList(List<Sale> saleList){
-        try (PrintWriter writer = new PrintWriter(new FileWriter(new File(salesDirectory).getAbsoluteFile(), true))){
+        try (PrintWriter writer = new PrintWriter(new FileWriter(salesDirectory))){
             for (Sale sale : saleList){
                 writer.print(sale.getIdSale()+ ";" + sale.getSaleAmount() + ";" + sale.getSaleDate());
                 for (String product : sale.getProductList()){
