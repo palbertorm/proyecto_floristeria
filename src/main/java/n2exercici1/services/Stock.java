@@ -8,7 +8,6 @@ import n2exercici1.products.Tree;
 import n2exercici1.services.mysqlDAO.MySQLManager;
 import n2exercici1.services.productsDAO.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Stock {
@@ -19,7 +18,6 @@ public class Stock {
     private TreeDAO treeDAO;
     private DecorationDAO decorationDAO;
     private double stockValue;
-    private final List<Product> productStock = new ArrayList<>();
 
     private Stock (MySQLManager manager){
         try {
@@ -48,9 +46,6 @@ public class Stock {
 
     public boolean getInitStock(){
         return this.initStock;
-    }
-    public List<Product> getProductStock (){
-        return this.productStock;
     }
 
     public List<Tree> getTreeStock(){

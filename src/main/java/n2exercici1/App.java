@@ -38,7 +38,7 @@ public class App {
                 case 2 -> runRemoveProduct(flowerShop);
                 case 3 -> runStoreInfo(flowerShop);
                 case 4 -> runSalesManager(flowerShop);
-                case 0 -> runWrapUp(flowerShop);
+                case 0 -> System.out.println("Closing app.");
             }
         } while (menuOption!=0);
     }
@@ -114,11 +114,11 @@ public class App {
                 case 1 -> cart = addToCart(flowerShop, cart, "TREE");
                 case 2 -> cart = addToCart(flowerShop, cart, "FLOWER");
                 case 3 -> cart = addToCart(flowerShop, cart, "DECORATION");
-                case 4 -> cart = removeFromCart(cart);
+                case 4 -> cart = removeFromCart(flowerShop, cart);
                 case 5 -> flowerShop.processSale(cart);
                 case 0 -> option = confirmExiting("Are you sure you want to cancel the sale? (YES/NO): ");
             }
-        } while (option!=0 && option!=3);
+        } while (option!=0 && option!=5);
         if (option==0) returnProductsToStock(flowerShop, cart);
     }
     private static List<Product> addToCart (FlowerShop flowerShop, List<Product> cart, String productType){
@@ -129,9 +129,11 @@ public class App {
         }
         return cart;
     }
-    private static List<Product> removeFromCart (List<Product> cart){
+    private static List<Product> removeFromCart (FlowerShop flowerShop, List<Product> cart){
         try {
-            cart.remove(getProductFromCart(cart, askProductName()));
+            Product product = getProductFromCart(cart, askProductName());
+            cart.remove(product);
+            flowerShop.returnProduct(product);
         } catch (ProductDoesNotExistsException e) {
             System.out.println(e.getMessage());
         }
@@ -142,11 +144,7 @@ public class App {
                 .orElseThrow(() -> new ProductDoesNotExistsException("This product is not in the cart."));
     }
     private static void returnProductsToStock(FlowerShop flowerShop, List<Product> cart){
-        flowerShop.returnProduct(cart);
-    }
-    private static void runWrapUp(FlowerShop flowerShop){
-        flowerShop.saveChanges();
-
+        cart.forEach(flowerShop::returnProduct);
     }
 
     // DATA INPUT METHODS

@@ -17,7 +17,6 @@ public class SalesManager {
     private boolean initSalesManager = false;
     private SaleDAO saleDAO;
     private double earnedMoney;
-    private List<Sale> salesHistoryList;
 
     private SalesManager(MySQLManager manager) {
         try {
@@ -43,10 +42,6 @@ public class SalesManager {
     public boolean getInitSalesManager(){
         return initSalesManager;
     }
-    public List<Sale> getSalesHistoryList() {
-        if (this.salesHistoryList.isEmpty()) System.out.println("The sales history is empty.");
-        return this.salesHistoryList;
-    }
 
     public void manageTheCart(List<Product> cart, double salePrice){
         cart.sort(Comparator.comparingInt(Product::getIdProduct));
@@ -54,12 +49,15 @@ public class SalesManager {
         addSale(new Sale(salePrice, date , getProductsFromCart(cart)));
     }
     private List<String> getProductsFromCart(List<Product> cart){
-        return cart.stream().map(Product::toTable).toList();
+        return cart.stream().map(Product::toString).toList();
     }
     private void addSale(Sale sale) {
-        this.salesHistoryList.add(sale);
-        System.out.println("Sale registered.");
-        updateEarnedMoney(sale);
+        int listSize = saleDAO.getAll().size();
+        this.saleDAO.insert(sale);
+        if (saleDAO.getAll().size()>listSize) {
+            System.out.println("Sale registered.");
+            updateEarnedMoney(sale);
+        }
     }
     private void updateEarnedMoney(Sale sale){
         this.earnedMoney += sale.getSaleAmount();
@@ -70,9 +68,13 @@ public class SalesManager {
         else salesHistory.forEach(System.out::println);
     }
     public void printTcket(int idSale){
-        String ticketSale = this.salesHistoryList.get(idSale-1).generateTicket();
-        System.out.println(ticketSale);
-        TicketPrinter.printTicketToTXT(ticketSale, idSale);
-        System.out.println("\nThe ticket has been printed.");
+        String ticketSale = saleDAO.getOne(idSale).generateTicket();
+        if (ticketSale!=null) {
+            System.out.println(ticketSale);
+            TicketPrinter.printTicketToTXT(ticketSale, idSale);
+            System.out.println("\nThe ticket has been printed.");
+        } else {
+            System.out.println("This sale's ID is not registered.");
+        }
     }
 }

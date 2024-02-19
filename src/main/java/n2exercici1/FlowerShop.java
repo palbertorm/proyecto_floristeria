@@ -6,12 +6,10 @@ import n2exercici1.products.Flower;
 import n2exercici1.products.Product;
 import n2exercici1.products.Tree;
 import n2exercici1.products.enums.MadeOf;
-import n2exercici1.sales.Sale;
 import n2exercici1.services.SalesManager;
 import n2exercici1.services.Stock;
 import n2exercici1.services.mysqlDAO.MySQLManager;
 
-import java.util.Comparator;
 import java.util.List;
 
 public class FlowerShop {
@@ -112,8 +110,8 @@ public class FlowerShop {
     public Product findProduct(String productName, String productType){
         return stock.findProduct(productName, productType);
     }
-    public void returnProduct (List<Product> cart){
-        cart.forEach(stock::addProduct);
+    public void returnProduct (Product product){
+        stock.addProduct(product);
     }
     public void processSale(List<Product> cart){
         double salePrice = cart.stream().mapToDouble(Product::getPrice).sum();
@@ -128,15 +126,6 @@ public class FlowerShop {
     }
     public void printSaleTicket(int idSale){
         salesManager.printTcket(idSale);
-    }
-
-    // WRAP UP METHOD
-    public void saveChanges(){
-        List<Product> productList = stock.getProductStock();
-        productList.sort(Comparator.comparingInt(Product::getIdProduct));
-        List<Sale> saleList = salesManager.getSalesHistoryList();
-        manager.saveProductList(productList);
-        manager.saveSaleList(saleList);
     }
 
 }
