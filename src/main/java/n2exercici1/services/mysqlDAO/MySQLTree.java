@@ -1,7 +1,7 @@
-package n1exercici1.services.mysqlDAO;
+package n2exercici1.services.mysqlDAO;
 
 import n1exercici1.products.Tree;
-import n1exercici1.services.productsDAO.TreeDAO;
+import n2exercici1.services.productsDAO.TreeDAO;
 
 import java.util.List;
 

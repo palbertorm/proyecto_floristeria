@@ -1,8 +1,8 @@
-package n1exercici1.services.mysqlDAO;
+package n2exercici1.services.mysqlDAO;
 
 import n1exercici1.products.Flower;
 import n1exercici1.products.Product;
-import n1exercici1.services.productsDAO.FlowerDAO;
+import n2exercici1.services.productsDAO.FlowerDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,17 +29,10 @@ public class MySQLFlowerDAO implements FlowerDAO {
     try(PreparedStatement stmt = conn.prepareStatement(INSERT)) {
     stmt.setInt(1, item.getIdProduct());
     stmt.setString(2, item.getName());
-    stmt.setString(3, item.getColor());
+    stmt.setString(3, item.getAttribute());
     stmt.setDouble(4, item.getPrice());
     if (stmt.executeUpdate() == 0){
         System.out.println(" was not inserted");
-    }
-    try(ResultSet res = stmt.getGeneratedKeys()){
-        if (res.next()) {
-            item.setIdProduct(res.getInt(1));
-        }else {
-            System.out.println("there is no id column");
-        }
     }
     } catch (SQLException e) {
         throw new RuntimeException(e);

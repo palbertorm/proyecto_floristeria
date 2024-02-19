@@ -1,4 +1,4 @@
-package n1exercici1.services.productsDAO;
+package n2exercici1.services.productsDAO;
 
 import n1exercici1.products.Tree;
 

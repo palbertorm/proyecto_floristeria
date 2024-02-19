@@ -16,9 +16,6 @@ public abstract class Product {
     public int getIdProduct(){
         return this.idProduct;
     }
-    public void setIdProduct(int idProduct) {
-        this.idProduct = idProduct;
-    }
 
     public String getName(){
         return this.name;
