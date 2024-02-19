@@ -1,11 +1,11 @@
 package n2exercici1.services.mysqlDAO;
 
-import n1exercici1.products.Decoration;
+import n2exercici1.products.Decoration;
 import n2exercici1.services.productsDAO.DecorationDAO;
 
 import java.util.List;
 
-public class MySQLDecoration implements DecorationDAO {
+public class MySQLDecorationDAO implements DecorationDAO {
     @Override
     public void insert(Decoration item) {
 

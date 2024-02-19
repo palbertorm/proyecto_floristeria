@@ -1,11 +1,11 @@
 package n2exercici1.services.mysqlDAO;
 
-import n1exercici1.products.Tree;
+import n2exercici1.products.Tree;
 import n2exercici1.services.productsDAO.TreeDAO;
 
 import java.util.List;
 
-public class MySQLTree implements TreeDAO {
+public class MySQLTreeDAO implements TreeDAO {
     @Override
     public void insert(Tree item) {
 

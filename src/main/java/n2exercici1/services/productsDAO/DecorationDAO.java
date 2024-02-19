@@ -1,6 +1,7 @@
 package n2exercici1.services.productsDAO;
 
-import n1exercici1.products.Decoration;
+import n2exercici1.products.Decoration;
 
 public interface DecorationDAO extends DAO<Decoration, Integer> {
+
 }

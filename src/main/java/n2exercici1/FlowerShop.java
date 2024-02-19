@@ -10,13 +10,15 @@ import n2exercici1.sales.Sale;
 import n2exercici1.services.DAOService;
 import n2exercici1.services.SalesManager;
 import n2exercici1.services.Stock;
+import n2exercici1.services.mysqlDAO.MySQLConnection;
+import n2exercici1.services.mysqlDAO.MySQLManager;
 
 import java.util.Comparator;
 import java.util.List;
 
 public class FlowerShop {
 
-    private final DAOService service;
+    private final MySQLManager service;
     private static FlowerShop flowerShop;
     private final String flowerShopName;
     private Stock stock;
@@ -24,15 +26,15 @@ public class FlowerShop {
     private boolean shopExists = true;
 
     private FlowerShop (String flowerShopName){
-        this.service = new DAOService();
+        this.service = new MySQLManager();
         this.flowerShopName = flowerShopName;
-        if (service.checkShopName(flowerShopName))initializeAttributes();
+        if (MySQLConnection.checkShopName(flowerShopName))initializeAttributes();
         else this.shopExists = false;
     }
     private  void initializeAttributes(){
         this.stock = Stock.getStock(this.service);
-        this.salesManager = SalesManager.getSalesManager(this.service);
-        this.shopExists = stock.getInitStock() && salesManager.getInitSalesManager();
+        //this.salesManager = SalesManager.getSalesManager(this.service);
+        //this.shopExists = stock.getInitStock() && salesManager.getInitSalesManager();
     }
     public static FlowerShop openFlowerShop(String flowerShopName){
         if (flowerShop == null) flowerShop = new FlowerShop(flowerShopName);
@@ -128,8 +130,8 @@ public class FlowerShop {
         List<Product> productList = stock.getProductStock();
         productList.sort(Comparator.comparingInt(Product::getIdProduct));
         List<Sale> saleList = salesManager.getSalesHistoryList();
-        service.exportProductList(productList);
-        service.exportSaleList(saleList);
+        //service.exportProductList(productList);
+        //service.exportSaleList(saleList);
     }
 
 }
