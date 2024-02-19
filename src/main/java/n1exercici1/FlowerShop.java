@@ -23,15 +23,13 @@ public class FlowerShop {
     private FlowerShop (String flowerShopName){
         this.service = new DAOService();
         this.flowerShopName = flowerShopName;
-        if (service.checkShopName(flowerShopName)){
-            this.stock = Stock.getStock(service, flowerShopName);
-            this.salesManager = SalesManager.getSalesManager(service, flowerShopName);
-            if (!(stock.getInitStock() && salesManager.getInitSalesManager())){
-                this.shopExists = false;
-            }
-        } else {
-            this.shopExists = false;
-        }
+        if (service.checkShopName(flowerShopName)) initializeAttributes();
+        else this.shopExists = false;
+    }
+    private void initializeAttributes(){
+        this.stock = Stock.getStock(this.service, this.flowerShopName);
+        this.salesManager = SalesManager.getSalesManager(this.service, this.flowerShopName);
+        this.shopExists = !(stock.getInitStock() && salesManager.getInitSalesManager());
     }
     public static FlowerShop openFlowerShop(String flowerShopName){
         if (flowerShop == null) flowerShop = new FlowerShop(flowerShopName);
