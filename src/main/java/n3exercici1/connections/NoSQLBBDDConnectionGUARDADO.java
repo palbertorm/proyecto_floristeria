@@ -31,9 +31,7 @@ public class NoSQLBBDDConnectionGUARDADO {
         checkDataConnection();
         MongoClient mongoClient;
         try {
-            System.out.println("CONECTANDO CON LA BASE DE DATOS");
             mongoClient = createMongoClient(createCredential(database));
-            System.out.println("CONECTADO CON LA BASE DE DATOS");
         } catch (MongoException e){
             System.out.println("Error connecting to MongoDB: " + e.getMessage());
             mongoClient = null;

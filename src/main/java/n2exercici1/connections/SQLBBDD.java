@@ -66,13 +66,14 @@ public class SQLBBDD {
     public static void returnProductList(List<Product> productList){
         try (Connection connection = SQLBBDDConnection.getConnection(sqlFileName);
              PreparedStatement delete = connection.prepareStatement("DELETE FROM products");
-             PreparedStatement insert = connection.prepareStatement("INSERT INTO products (type, name, price, attribute) VALUES (?, ?, ?, ?)")){
+             PreparedStatement insert = connection.prepareStatement("INSERT INTO products (id, type, name, price, attribute) VALUES (?, ?, ?, ?, ?)")){
             delete.executeUpdate();
             for (Product product : productList) {
-                insert.setString(1, product.getType());
-                insert.setString(2, product.getName());
-                insert.setDouble(3, product.getPrice());
-                insert.setString(4, product.getAttribute());
+                insert.setInt(1, product.getIdProduct());
+                insert.setString(2, product.getType());
+                insert.setString(3, product.getName());
+                insert.setDouble(4, product.getPrice());
+                insert.setString(5, product.getAttribute());
                 insert.addBatch();
             }
             insert.executeBatch();
@@ -83,12 +84,13 @@ public class SQLBBDD {
     public static void returnSaleList(List<Sale> saleList){
         try (Connection connection = SQLBBDDConnection.getConnection(sqlFileName);
              PreparedStatement delete = connection.prepareStatement("DELETE FROM sales");
-             PreparedStatement insert = connection.prepareStatement("INSERT INTO sales (totalPrice, date, productList) VALUES (?, ?, ?)")){
+             PreparedStatement insert = connection.prepareStatement("INSERT INTO sales (id, totalPrice, date, productList) VALUES (?, ?, ?, ?)")){
             delete.executeUpdate();
             for (Sale sale : saleList){
-                insert.setDouble(1, sale.getSaleAmount());
-                insert.setDate(2, (Date) sale.getSaleDate());
-                insert.setString(3, String.join(";", sale.getProductList()));
+                insert.setInt(1, sale.getIdSale());
+                insert.setDouble(2, sale.getSaleAmount());
+                insert.setDate(3, (Date) sale.getSaleDate());
+                insert.setString(4, String.join(";", sale.getProductList()));
                 insert.addBatch();
             }
             insert.executeBatch();
