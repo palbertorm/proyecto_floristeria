@@ -13,9 +13,9 @@ import java.util.List;
 public class MySQLTreeDAO implements TreeDAO {
 
     final String INSERT = "INSERT INTO products (type, name, price, attribute) VALUES (?, ?, ?, ?)";
-    final String DELETE = "DELETE FROM products WHERE id = ?";
+    final String DELETE = "DELETE FROM products WHERE LOWER(name) = LOWER(?)";
     final String GETALL = "SELECT * FROM products WHERE type = \"TREE\"";
-    final String GETONE = " SELECT * FROM products WHERE type = \"TREE\" && name = ?";
+    final String GETONE = " SELECT * FROM products WHERE type = \"TREE\" AND LOWER(name) = LOWER(?)";
     private final Connection connection;
 
     public MySQLTreeDAO(Connection connection) {
@@ -39,9 +39,9 @@ public class MySQLTreeDAO implements TreeDAO {
     @Override
     public void delete(Tree tree) {
         try(PreparedStatement delete = connection.prepareStatement(DELETE)) {
-            delete.setString(3, tree.getName());
+            delete.setString(1, tree.getName().toLowerCase());
             if (delete.executeUpdate() == 0){
-                System.out.println("This tree is not in stock.");
+                System.out.println("The stock changes could not be made.");
             }
         } catch (SQLException e) {
             System.out.println("The stock changes could not be made: " + e.getMessage());
@@ -64,7 +64,7 @@ public class MySQLTreeDAO implements TreeDAO {
         Tree tree = null;
         try(PreparedStatement getOne = connection.prepareStatement(GETONE);
             ResultSet reader = getOne.executeQuery()) {
-            getOne.setString(1, name);
+            getOne.setString(1, name.toLowerCase());
             if (reader.next()) {
                 tree = createTree(reader);
             }

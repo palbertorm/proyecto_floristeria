@@ -14,9 +14,9 @@ import java.util.List;
 public class MySQLDecorationDAO implements DecorationDAO {
 
     final String INSERT = "INSERT INTO products (type, name, price, attribute) VALUES (?, ?, ?, ?)";
-    final String DELETE = "DELETE FROM products WHERE id = ?";
+    final String DELETE = "DELETE FROM products WHERE LOWER(name) = LOWER(?)";
     final String GETALL = "SELECT * FROM products WHERE type = \"DECORATION\"";
-    final String GETONE = " SELECT * FROM products WHERE type = \"DECORATION\" && name = ?";
+    final String GETONE = " SELECT * FROM products WHERE type = \"DECORATION\" AND LOWER(name) = LOWER(?)";
     private final Connection connection;
 
     public MySQLDecorationDAO(Connection connection) {
@@ -39,9 +39,9 @@ public class MySQLDecorationDAO implements DecorationDAO {
     @Override
     public void delete(Decoration decoration) {
         try(PreparedStatement delete = connection.prepareStatement(DELETE)) {
-            delete.setString(3, decoration.getName());
+            delete.setString(1, decoration.getName().toLowerCase());
             if (delete.executeUpdate() == 0){
-                System.out.println("This decoration is not in stock.");
+                System.out.println("The stock changes could not be made");
             }
         } catch (SQLException e) {
             System.out.println("The stock changes could not be made: " + e.getMessage());
@@ -64,7 +64,7 @@ public class MySQLDecorationDAO implements DecorationDAO {
         Decoration decoration = null;
         try(PreparedStatement getOne = connection.prepareStatement(GETONE);
             ResultSet reader = getOne.executeQuery()) {
-            getOne.setString(1, name);
+            getOne.setString(1, name.toLowerCase());
             if (reader.next()) {
                 decoration = createDecoration(reader);
             }

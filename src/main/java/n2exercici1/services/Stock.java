@@ -5,6 +5,8 @@ import n2exercici1.products.Decoration;
 import n2exercici1.products.Flower;
 import n2exercici1.products.Product;
 import n2exercici1.products.Tree;
+import n2exercici1.services.mysqlDAO.MySQLManager;
+import n2exercici1.services.productsDAO.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,54 +15,63 @@ public class Stock {
 
     private static Stock stock;
     private boolean initStock; // IMPIDE QUE SE LANZE EL MENSAJE PRODUCTO AÑADIDO HASTA QUE SE HAYA CARGADO LA BBDD
-    private final List<Tree> treeStock = new ArrayList<>();
-    private final List<Flower> flowerStock = new ArrayList<>();
-    private final List<Decoration> decorationStock = new ArrayList<>();
-    private final List<Product> productStock = new ArrayList<>();
+    private FlowerDAO flowerDAO;
+    private TreeDAO treeDAO;
+    private DecorationDAO decorationDAO;
     private double stockValue;
+    private final List<Product> productStock = new ArrayList<>();
 
-    private Stock (DAOService service){
+    private Stock (MySQLManager manager){
         try {
-            service.getProductList().forEach(this::addProduct);
-            if (productStock.isEmpty()) System.out.println("This store has zero stock in it");
+            this.flowerDAO = manager.getFlowerDAO();
+            this.treeDAO = manager.getTreeDAO();
+            this.decorationDAO = manager.getDecorationDAO();
+            if (stockEmpty()) System.out.println("This store has zero stock in it");
+            else calculateStockValue();
             this.initStock = true;
         } catch (NullPointerException e){
             this.initStock = false;
         }
     }
-    public static Stock getStock (DAOService service){
-        if (stock == null) stock = new Stock(service);
+    public static Stock getStock (MySQLManager manager){
+        if (stock == null) stock = new Stock(manager);
         return stock;
+    }
+    private boolean stockEmpty(){
+        return getFlowerStock().isEmpty() && getTreeStock().isEmpty() && getDecorationStock().isEmpty();
+    }
+    private void calculateStockValue(){
+        this.stockValue = getTreeStock().stream().mapToDouble(Product::getPrice).sum()
+                + getFlowerStock().stream().mapToDouble(Product::getPrice).sum()
+                + getDecorationStock().stream().mapToDouble(Product::getPrice).sum();
+    }
+
+    public boolean getInitStock(){
+        return this.initStock;
     }
     public List<Product> getProductStock (){
         return this.productStock;
     }
-    public boolean getInitStock(){
-        return initStock;
-    }
 
     public List<Tree> getTreeStock(){
-        if (this.treeStock.isEmpty()) System.out.println("The tree stock is empty.");
-        return treeStock;
+        return this.treeDAO.getAll();
     }
     public List<Flower> getFlowerStock(){
-        if (this.flowerStock.isEmpty()) System.out.println("The flower stock is empty.");
-        return flowerStock;
+        return this.flowerDAO.getAll();
     }
     public List<Decoration> getDecorationStock(){
-        if (this.decorationStock.isEmpty()) System.out.println("The decoration stock is empty.");
-        return decorationStock;
+        return this.decorationDAO.getAll();
     }
     public double getStockValue(){
-        return stockValue;
+        return this.stockValue;
     }
 
     public void addProduct (Product product){
         try {
             switch (product){
-                case Tree tree -> treeStock.add(tree);
-                case Flower flower -> flowerStock.add(flower);
-                case Decoration decoration -> decorationStock.add(decoration);
+                case Tree tree -> treeDAO.insert(tree);
+                case Flower flower -> flowerDAO.insert(flower);
+                case Decoration decoration -> decorationDAO.insert(decoration);
                 default -> throw new ProductDoesNotExistsException("This type of product does not exist.");
             }
             wrapStockChanges(product, "add");
@@ -71,9 +82,9 @@ public class Stock {
     public void removeProduct (Product product){
         try {
             switch (product) {
-                case Tree tree -> treeStock.remove(tree);
-                case Flower flower -> flowerStock.remove(flower);
-                case Decoration decoration -> decorationStock.remove(decoration);
+                case Tree tree -> treeDAO.delete(tree);
+                case Flower flower -> flowerDAO.delete(flower);
+                case Decoration decoration -> decorationDAO.delete(decoration);
                 default -> throw new ProductDoesNotExistsException("This product does not exist.");
             }
             wrapStockChanges(product, "remove");
@@ -82,24 +93,19 @@ public class Stock {
         }
     }
     public Product findProduct(String productName, String type){
-        return this.productStock.stream().filter(product -> product.getName().equalsIgnoreCase(productName) && product.getType().equalsIgnoreCase(type))
-                .findFirst().orElse(null);
+        Product productFound = null;
+        switch(type){
+            case "TREE" -> productFound = treeDAO.getOne(productName);
+            case "FLOWER" -> productFound = flowerDAO.getOne(productName);
+            case "DECORATION" -> productFound = decorationDAO.getOne(productName);
+        }
+        return productFound;
     }
     private void wrapStockChanges(Product product, String action){
-        String message = action.equals("remove") ? "Product removed" : this.initStock ? "Product stocked" : null;
-        if (message!=null) System.out.println(message);
+        System.out.println(action.equals("add") ? "Product stocked" : "Product removed");
         updateStockValue(product, action);
-        updateProductStock(product, action);
     }
     private void updateStockValue(Product product, String action){
         this.stockValue += (action.equals("add") ? product.getPrice() : -product.getPrice());
     }
-    private void updateProductStock(Product product, String action){
-        if (action.equals("add")) {
-            this.productStock.add(product);
-        } else {
-            this.productStock.remove(product);
-        }
-    }
-
 }

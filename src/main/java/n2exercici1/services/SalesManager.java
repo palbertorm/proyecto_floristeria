@@ -3,6 +3,8 @@ package n2exercici1.services;
 import n2exercici1.products.Product;
 import n2exercici1.sales.Sale;
 import n2exercici1.sales.TicketPrinter;
+import n2exercici1.services.mysqlDAO.MySQLManager;
+import n2exercici1.services.productsDAO.SaleDAO;
 
 import java.util.Calendar;
 import java.util.Comparator;
@@ -13,36 +15,37 @@ public class SalesManager {
 
     private static SalesManager salesManager;
     private boolean initSalesManager = false;
-    private List<Sale> salesHistoryList;
+    private SaleDAO saleDAO;
     private double earnedMoney;
+    private List<Sale> salesHistoryList;
 
-    private SalesManager(DAOService service) {
+    private SalesManager(MySQLManager manager) {
         try {
-            this.salesHistoryList = service.getSaleList();
-            if (salesHistoryList.isEmpty()) System.out.println("This store doesn't contain a history of sales yet");
-            calculateTotalSalesValue();
+            this.saleDAO = manager.getSaleDAO();
+            if (this.saleDAO.getAll().isEmpty()) System.out.println("This store doesn't contain a history of sales yet");
+            else calculateTotalSalesValue();
             this.initSalesManager = true;
         } catch (NullPointerException e){
             this.initSalesManager = false;
         }
     }
-    public static SalesManager getSalesManager(DAOService service) {
-        if (salesManager == null) salesManager = new SalesManager(service);
+    public static SalesManager getSalesManager(MySQLManager manager) {
+        if (salesManager == null) salesManager = new SalesManager(manager);
         return salesManager;
     }
     private void calculateTotalSalesValue(){
-        this.earnedMoney = this.salesHistoryList.stream().mapToDouble(Sale::getSaleAmount).sum();
+        this.earnedMoney = this.saleDAO.getAll().stream().mapToDouble(Sale::getSaleAmount).sum();
     }
 
-    public List<Sale> getSalesHistoryList() {
-        if (this.salesHistoryList.isEmpty()) System.out.println("The sales history is empty.");
-        return this.salesHistoryList;
-    }
     public double getEarnedMoney(){
         return this.earnedMoney;
     }
     public boolean getInitSalesManager(){
         return initSalesManager;
+    }
+    public List<Sale> getSalesHistoryList() {
+        if (this.salesHistoryList.isEmpty()) System.out.println("The sales history is empty.");
+        return this.salesHistoryList;
     }
 
     public void manageTheCart(List<Product> cart, double salePrice){
@@ -62,7 +65,9 @@ public class SalesManager {
         this.earnedMoney += sale.getSaleAmount();
     }
     public void printSalesHistory() {
-        this.salesHistoryList.forEach(System.out::println);
+        List<Sale> salesHistory = saleDAO.getAll();
+        if (salesHistory.isEmpty()) System.out.println("The sales history is empty.");
+        else salesHistory.forEach(System.out::println);
     }
     public void printTcket(int idSale){
         String ticketSale = this.salesHistoryList.get(idSale-1).generateTicket();

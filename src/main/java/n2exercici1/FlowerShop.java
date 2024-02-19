@@ -7,16 +7,16 @@ import n2exercici1.products.Product;
 import n2exercici1.products.Tree;
 import n2exercici1.products.enums.MadeOf;
 import n2exercici1.sales.Sale;
-import n2exercici1.services.DAOService;
 import n2exercici1.services.SalesManager;
 import n2exercici1.services.Stock;
+import n2exercici1.services.mysqlDAO.MySQLManager;
 
 import java.util.Comparator;
 import java.util.List;
 
 public class FlowerShop {
 
-    private final DAOService service;
+    private final MySQLManager manager;
     private static FlowerShop flowerShop;
     private final String flowerShopName;
     private Stock stock;
@@ -24,14 +24,14 @@ public class FlowerShop {
     private boolean shopExists = true;
 
     private FlowerShop (String flowerShopName){
-        this.service = new DAOService();
+        this.manager = new MySQLManager();
         this.flowerShopName = flowerShopName;
-        if (service.checkShopName(flowerShopName)) initializeAttributes();
+        if (manager.checkShopName(flowerShopName)) initializeAttributes();
         else this.shopExists = false;
     }
     private  void initializeAttributes(){
-        this.stock = Stock.getStock(this.service);
-        this.salesManager = SalesManager.getSalesManager(this.service);
+        this.stock = Stock.getStock(this.manager);
+        this.salesManager = SalesManager.getSalesManager(this.manager);
         this.shopExists = stock.getInitStock() && salesManager.getInitSalesManager();
     }
     public static FlowerShop openFlowerShop(String flowerShopName){
@@ -47,7 +47,9 @@ public class FlowerShop {
         stock.addProduct(new Tree(treeName, treePrice, treeHeigth));
     }
     public void printTreeStock(){
-        stock.getTreeStock().forEach(System.out::println);
+        List<Tree> treeStock = stock.getTreeStock();
+        if (treeStock.isEmpty()) System.out.println("The tree's stock is empty.");
+        else treeStock.forEach(System.out::println);
     }
     public void removeTree(String productName){
         try{
@@ -62,7 +64,9 @@ public class FlowerShop {
         stock.addProduct(new Flower(flowerName, flowerPrice, flowerColor));
     }
     public void printFlowerStock(){
-        stock.getFlowerStock().forEach(System.out::println);
+        List<Flower> flowerStock = stock.getFlowerStock();
+        if (flowerStock.isEmpty()) System.out.println("The flower's stock is empty.");
+        else flowerStock.forEach(System.out::println);
     }
     public void removeFlower(String productName){
         try {
@@ -77,7 +81,9 @@ public class FlowerShop {
         stock.addProduct(new Decoration(decorationName, decorationPrice, madeof));
     }
     public void printDecorationStock(){
-        stock.getDecorationStock().forEach(System.out::println);
+        List<Decoration> decorationList = stock.getDecorationStock();
+        if (decorationList.isEmpty()) System.out.println("The decoration's stock is empty.");
+        else decorationList.forEach(System.out::println);
     }
     public void removeDecoration(String productName){
         try {
@@ -113,6 +119,7 @@ public class FlowerShop {
         double salePrice = cart.stream().mapToDouble(Product::getPrice).sum();
         salesManager.manageTheCart(cart, salePrice);
     }
+
     public void printSalesHistory(){
         salesManager.printSalesHistory();
     }
@@ -128,8 +135,8 @@ public class FlowerShop {
         List<Product> productList = stock.getProductStock();
         productList.sort(Comparator.comparingInt(Product::getIdProduct));
         List<Sale> saleList = salesManager.getSalesHistoryList();
-        service.saveProductList(productList);
-        service.saveSaleList(saleList);
+        manager.saveProductList(productList);
+        manager.saveSaleList(saleList);
     }
 
 }

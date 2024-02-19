@@ -12,9 +12,9 @@ import java.util.List;
 
 public class MySQLFlowerDAO implements FlowerDAO {
     final String INSERT = "INSERT INTO products (type, name, price, attribute) VALUES (?, ?, ?, ?)";
-    final String DELETE = "DELETE FROM products WHERE id = ?";
+    final String DELETE = "DELETE FROM products WHERE LOWER(name) = LOWER(?)";
     final String GETALL = "SELECT * FROM products WHERE type = \"FLOWER\"";
-    final String GETONE = " SELECT * FROM products WHERE type = \"FLOWER\" && name = ?";
+    final String GETONE = " SELECT * FROM products WHERE type = \"FLOWER\" AND LOWER(name) = LOWER(?)";
     private final Connection connection;
 
     public MySQLFlowerDAO(Connection connection) {
@@ -38,9 +38,9 @@ public class MySQLFlowerDAO implements FlowerDAO {
     @Override
     public void delete(Flower flower) {
         try(PreparedStatement delete = connection.prepareStatement(DELETE)) {
-            delete.setString(3, flower.getName());
+            delete.setString(1, flower.getName().toLowerCase());
             if (delete.executeUpdate() == 0){
-                System.out.println("This flower is not in stock.");
+                System.out.println("The stock changes could not be made");
             }
         } catch (SQLException e) {
             System.out.println("The stock changes could not be made: " + e.getMessage());
@@ -63,7 +63,7 @@ public class MySQLFlowerDAO implements FlowerDAO {
         Flower flower = null;
         try(PreparedStatement getOne = connection.prepareStatement(GETONE);
             ResultSet reader = getOne.executeQuery()) {
-            getOne.setString(1, name);
+            getOne.setString(1, name.toLowerCase());
             if (reader.next()) {
                 flower = createFlower(reader);
             }
