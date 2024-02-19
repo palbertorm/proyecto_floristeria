@@ -40,12 +40,15 @@ public class Stock {
     }
 
     public List<Tree> getTreeStock(){
+        if (this.treeStock.isEmpty()) System.out.println("The tree stock is empty.");
         return treeStock;
     }
     public List<Flower> getFlowerStock(){
+        if (this.flowerStock.isEmpty()) System.out.println("The flower stock is empty.");
         return flowerStock;
     }
     public List<Decoration> getDecorationStock(){
+        if (this.decorationStock.isEmpty()) System.out.println("The decoration stock is empty.");
         return decorationStock;
     }
     public double getStockValue(){

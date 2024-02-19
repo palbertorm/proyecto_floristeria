@@ -35,6 +35,7 @@ public class SalesManager {
     }
 
     public List<Sale> getSalesHistoryList() {
+        if (this.salesHistoryList.isEmpty()) System.out.println("The sales history is empty.");
         return this.salesHistoryList;
     }
     public double getEarnedMoney(){
