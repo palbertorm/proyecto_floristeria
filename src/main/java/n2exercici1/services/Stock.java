@@ -21,7 +21,7 @@ public class Stock {
 
     private Stock (DAOService service){
         try {
-            new ArrayList<>(service.getProductList()).forEach(this::addProduct);
+            service.getProductList().forEach(this::addProduct);
             if (productStock.isEmpty()) System.out.println("This store has zero stock in it");
             this.initStock = true;
         } catch (NullPointerException e){

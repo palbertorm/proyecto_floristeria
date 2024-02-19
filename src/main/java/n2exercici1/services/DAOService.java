@@ -19,7 +19,7 @@ public class DAOService {
         boolean exists;
         try (Stream<Path> files = Files.walk(Paths.get(directory))){
             exists = files.map(Path::getFileName).map(Path::toString).anyMatch(fileName -> fileName.toLowerCase().contains(shopName.toLowerCase()));
-            SQLBBDD.setSqlFileName(shopName+"flowershop");
+            if(exists) SQLBBDD.setSqlFileName(shopName+"flowershop");
         } catch (IOException e){
             exists = false;
         }
