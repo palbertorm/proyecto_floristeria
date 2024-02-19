@@ -1,0 +1,210 @@
+[{
+  "_id": {
+    "$oid": "65d26b6a30072b12db670f7a"
+  },
+  "id": 1,
+  "type": "FLOWER",
+  "name": "Rosas",
+  "price": 15.5,
+  "attribute": "Rojo"
+},
+{
+  "_id": {
+    "$oid": "65d26b6a30072b12db670f7b"
+  },
+  "id": 2,
+  "type": "TREE",
+  "name": "Pino",
+  "price": 25.75,
+  "attribute": 3.5
+},
+{
+  "_id": {
+    "$oid": "65d26b6a30072b12db670f7c"
+  },
+  "id": 3,
+  "type": "DECORATION",
+  "name": "Jarrón",
+  "price": 10.2,
+  "attribute": "wood"
+},
+{
+  "_id": {
+    "$oid": "65d26b6a30072b12db670f7d"
+  },
+  "id": 4,
+  "type": "FLOWER",
+  "name": "Margaritas",
+  "price": 12.8,
+  "attribute": "Blanco"
+},
+{
+  "_id": {
+    "$oid": "65d26b6a30072b12db670f7e"
+  },
+  "id": 5,
+  "type": "DECORATION",
+  "name": "Lámpara",
+  "price": 30,
+  "attribute": "plastic"
+},
+{
+  "_id": {
+    "$oid": "65d26b6a30072b12db670f7f"
+  },
+  "id": 6,
+  "type": "TREE",
+  "name": "Roble",
+  "price": 35.25,
+  "attribute": 4.2
+},
+{
+  "_id": {
+    "$oid": "65d26b6a30072b12db670f80"
+  },
+  "id": 7,
+  "type": "FLOWER",
+  "name": "Tulipanes",
+  "price": 18.9,
+  "attribute": "Amarillo"
+},
+{
+  "_id": {
+    "$oid": "65d26b6a30072b12db670f81"
+  },
+  "id": 8,
+  "type": "DECORATION",
+  "name": "Silla",
+  "price": 22.5,
+  "attribute": "wood"
+},
+{
+  "_id": {
+    "$oid": "65d26b6a30072b12db670f82"
+  },
+  "id": 9,
+  "type": "FLOWER",
+  "name": "Lirios",
+  "price": 20.3,
+  "attribute": "Púrpura"
+},
+{
+  "_id": {
+    "$oid": "65d26b6a30072b12db670f83"
+  },
+  "id": 10,
+  "type": "TREE",
+  "name": "Arce",
+  "price": 28.6,
+  "attribute": 3.8
+},
+{
+  "_id": {
+    "$oid": "65d26b6a30072b12db670f84"
+  },
+  "id": 11,
+  "type": "DECORATION",
+  "name": "Mesa",
+  "price": 45.8,
+  "attribute": "wood"
+},
+{
+  "_id": {
+    "$oid": "65d26b6a30072b12db670f85"
+  },
+  "id": 12,
+  "type": "FLOWER",
+  "name": "Girasoles",
+  "price": 14.75,
+  "attribute": "Amarillo"
+},
+{
+  "_id": {
+    "$oid": "65d26b6a30072b12db670f86"
+  },
+  "id": 13,
+  "type": "DECORATION",
+  "name": "Estantería",
+  "price": 55,
+  "attribute": "wood"
+},
+{
+  "_id": {
+    "$oid": "65d26b6a30072b12db670f87"
+  },
+  "id": 14,
+  "type": "FLOWER",
+  "name": "Orquídeas",
+  "price": 30.5,
+  "attribute": "Rosado"
+},
+{
+  "_id": {
+    "$oid": "65d26b6a30072b12db670f88"
+  },
+  "id": 15,
+  "type": "DECORATION",
+  "name": "Maceta",
+  "price": 8.9,
+  "attribute": "plastic"
+},
+{
+  "_id": {
+    "$oid": "65d26b6a30072b12db670f89"
+  },
+  "id": 16,
+  "type": "TREE",
+  "name": "Abeto",
+  "price": 22.75,
+  "attribute": 4
+},
+{
+  "_id": {
+    "$oid": "65d26b6a30072b12db670f8a"
+  },
+  "id": 17,
+  "type": "FLOWER",
+  "name": "Jacintos",
+  "price": 16.2,
+  "attribute": "Azul"
+},
+{
+  "_id": {
+    "$oid": "65d26b6a30072b12db670f8b"
+  },
+  "id": 18,
+  "type": "DECORATION",
+  "name": "Sofá",
+  "price": 65.3,
+  "attribute": "plastic"
+},
+{
+  "_id": {
+    "$oid": "65d26b6a30072b12db670f8c"
+  },
+  "id": 19,
+  "type": "TREE",
+  "name": "Abies",
+  "price": 30.5,
+  "attribute": 4.1
+},
+{
+  "_id": {
+    "$oid": "65d26b6a30072b12db670f8d"
+  },
+  "id": 20,
+  "type": "FLOWER",
+  "name": "Dalias",
+  "price": 22.8,
+  "attribute": "Naranja"
+},
+{
+  "_id": {
+    "$oid": "65d26b6a30072b12db670f8e"
+  },
+  "id": 21,
+  "type": "TREE",
+  "name": "Olivo",
+  "price": 53.4,
+  "attribute": 4.8
+}]

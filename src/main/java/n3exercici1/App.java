@@ -9,7 +9,7 @@ import n3exercici1.products.enums.MadeOf;
 import java.util.ArrayList;
 import java.util.List;
 
-import static n1exercici1.services.InputData.*;
+import static n3exercici1.services.InputData.*;
 
 public class App {
 

@@ -29,7 +29,6 @@ public class SQLBBDD {
                 if (newProduct!=null) productList.add(newProduct);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
             productList = null;
         }
         return productList;
@@ -78,7 +77,7 @@ public class SQLBBDD {
             }
             insert.executeBatch();
         } catch (SQLException e){
-            System.out.println("The changes have not been saved at the database. Wrong path provided.");
+            System.out.println("The stock changes could not have been saved at the database.");
         }
     }
     public static void returnSaleList(List<Sale> saleList){
@@ -94,7 +93,7 @@ public class SQLBBDD {
             }
             insert.executeBatch();
         } catch (SQLException e){
-            System.out.println("The changes have not been saved at the database. Wrong path provided.");
+            System.out.println("The sales history changes could not have been saved at the database.");
         }
     }
 
