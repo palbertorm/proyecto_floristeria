@@ -5,7 +5,6 @@ import n2exercici1.products.Decoration;
 import n2exercici1.products.Flower;
 import n2exercici1.products.Product;
 import n2exercici1.products.Tree;
-import n2exercici1.services.mysqlDAO.MySQLManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,16 +19,16 @@ public class Stock {
     private final List<Product> productStock = new ArrayList<>();
     private double stockValue;
 
-    private Stock (MySQLManager service){
+    private Stock (DAOService service){
         try {
-            service.getFlowerDAO().getAll().forEach(this::addProduct);
+            service.getProductList().forEach(this::addProduct);
             if (productStock.isEmpty()) System.out.println("This store has zero stock in it");
             this.initStock = true;
         } catch (NullPointerException e){
             this.initStock = false;
         }
     }
-    public static Stock getStock (MySQLManager service){
+    public static Stock getStock (DAOService service){
         if (stock == null) stock = new Stock(service);
         return stock;
     }

@@ -1,4 +1,4 @@
-package n2exercici1.connections;
+package n2exercici1.services.connections;
 
 import static n2exercici1.services.InputData.askString;
 

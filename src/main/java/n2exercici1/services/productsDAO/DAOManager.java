@@ -4,5 +4,6 @@ public interface DAOManager {
     DecorationDAO getDecorationDAO();
     FlowerDAO getFlowerDAO();
     TreeDAO getTreeDAO();
+    SaleDAO getSaleDAO();
 
 }

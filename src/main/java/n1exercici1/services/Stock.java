@@ -19,17 +19,17 @@ public class Stock {
     private final List<Product> productStock = new ArrayList<>();
     private double stockValue;
 
-    private Stock (DAOService service, String flowerShopName){
+    private Stock (DAOService service){
         try {
-            service.getProductList(flowerShopName).forEach(this::addProduct);
+            service.getProductList().forEach(this::addProduct);
             if (productStock.isEmpty()) System.out.println("This store has zero stock in it");
             this.initStock = true;
         } catch (NullPointerException e){
             this.initStock = false;
         }
     }
-    public static Stock getStock (DAOService service, String flowerShopName){
-        if (stock == null) stock = new Stock(service, flowerShopName);
+    public static Stock getStock (DAOService service){
+        if (stock == null) stock = new Stock(service);
         return stock;
     }
     public List<Product> getProductStock (){

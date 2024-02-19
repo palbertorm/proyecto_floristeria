@@ -1,4 +1,4 @@
-package n1exercici1.connections;
+package n1exercici1.services.connections;
 
 import n1exercici1.products.Decoration;
 import n1exercici1.products.Flower;
@@ -18,33 +18,6 @@ public class TxtBBDD {
     private static String stockDirectory;
     private static String salesDirectory;
 
-    public static List<Product> getProductList(String txtFileName){
-        stockDirectory = txtFileName;
-        List<Product> productList = new ArrayList<>();
-        for (String[] s : getTxtLines(txtFileName)) {
-            switch (s[1].toUpperCase()){
-                case "FLOWER" -> productList.add(new Flower(s[2],Double.parseDouble(s[3]),s[4]));
-                case "TREE" -> productList.add(new Tree(s[2],Double.parseDouble(s[3]),Double.parseDouble(s[4])));
-                case "DECORATION" -> {
-                    if (s[4].equalsIgnoreCase("WOOD")){
-                        productList.add(new Decoration(s[2],Double.parseDouble(s[3]), MadeOf.WOOD));
-                    } else {
-                        productList.add(new Decoration (s[2],Double.parseDouble(s[3]), MadeOf.PLASTIC));
-                    }
-                }
-            }
-        }
-        return productList;
-    }
-    public static List<Sale> getSaleList (String txtFileName){
-        salesDirectory = txtFileName;
-        List<Sale> saleListFromTxt = new ArrayList<>();
-        for (String[] s : getTxtLines(txtFileName)){
-            List<String> productListFromTxt = new ArrayList<>(Arrays.asList(s).subList(3, s.length));
-            saleListFromTxt.add(new Sale(Double.parseDouble(s[1]), Date.valueOf(s[2]), productListFromTxt));
-        }
-        return saleListFromTxt;
-    }
     private static List<String[]> getTxtLines(String fileToRead) {
         List<String[]> txtLines = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(fileToRead))) {
@@ -57,6 +30,41 @@ public class TxtBBDD {
         }
         return txtLines;
     }
+    public static List<Product> getProductList(String txtFileName){
+        stockDirectory = txtFileName;
+        List<Product> productList = new ArrayList<>();
+        Product newProduct;
+        for (String[] s : getTxtLines(txtFileName)) {
+            newProduct = createProduct(s);
+            if (newProduct!=null) productList.add(newProduct);
+        }
+        return productList;
+    }
+    private static Product createProduct(String[] s){
+        Product newProduct = null;
+        switch (s[1].toUpperCase()){
+            case "FLOWER" -> newProduct = new Flower(s[2],Double.parseDouble(s[3]),s[4]);
+            case "TREE" -> newProduct = new Tree(s[2],Double.parseDouble(s[3]),Double.parseDouble(s[4]));
+            case "DECORATION" -> {
+                if (s[4].equalsIgnoreCase("WOOD")){
+                    newProduct = new Decoration(s[2],Double.parseDouble(s[3]), MadeOf.WOOD);
+                } else {
+                    newProduct = new Decoration (s[2],Double.parseDouble(s[3]), MadeOf.PLASTIC);
+                }
+            }
+        }
+        return newProduct;
+    }
+    public static List<Sale> getSaleList (String txtFileName){
+        salesDirectory = txtFileName;
+        List<Sale> saleListFromTxt = new ArrayList<>();
+        for (String[] s : getTxtLines(txtFileName)){
+            List<String> productListFromTxt = new ArrayList<>(Arrays.asList(s).subList(3, s.length));
+            saleListFromTxt.add(new Sale(Double.parseDouble(s[1]), Date.valueOf(s[2]), productListFromTxt));
+        }
+        return saleListFromTxt;
+    }
+
 
     public static void returnProductList(List<Product> productList){
         try (PrintWriter writer = new PrintWriter(new FileWriter(stockDirectory))){

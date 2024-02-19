@@ -27,8 +27,8 @@ public class FlowerShop {
         else this.shopExists = false;
     }
     private void initializeAttributes(){
-        this.stock = Stock.getStock(this.service, this.flowerShopName);
-        this.salesManager = SalesManager.getSalesManager(this.service, this.flowerShopName);
+        this.stock = Stock.getStock(this.service);
+        this.salesManager = SalesManager.getSalesManager(this.service);
         this.shopExists = stock.getInitStock() && salesManager.getInitSalesManager();
     }
     public static FlowerShop openFlowerShop(String flowerShopName){

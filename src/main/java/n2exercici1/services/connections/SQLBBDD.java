@@ -1,4 +1,4 @@
-package n2exercici1.connections;
+package n2exercici1.services.connections;
 
 import n2exercici1.products.Decoration;
 import n2exercici1.products.Flower;
@@ -25,7 +25,7 @@ public class SQLBBDD {
         Product newProduct;
         try (ResultSet reader = ((SQLBBDDConnection.getConnection(sqlFileName)).createStatement()).executeQuery("SELECT * FROM products")) {
             while (reader.next()) {
-                newProduct = createProductFromBBDD(reader);
+                newProduct = createProduct(reader);
                 if (newProduct!=null) productList.add(newProduct);
             }
         } catch (SQLException e) {
@@ -33,8 +33,8 @@ public class SQLBBDD {
         }
         return productList;
     }
-    private static Product createProductFromBBDD(ResultSet reader) throws SQLException {
-        Product newProduct;
+    private static Product createProduct(ResultSet reader) throws SQLException {
+        Product newProduct = null;
         switch (reader.getString(2).toUpperCase()){
             case "FLOWER" -> newProduct = new Flower(reader.getString(3),reader.getDouble(4),reader.getString(5));
             case "TREE" -> newProduct = new Tree(reader.getString(3), reader.getDouble(4), reader.getDouble(5));
@@ -45,7 +45,6 @@ public class SQLBBDD {
                     newProduct = new Decoration(reader.getString(3), reader.getDouble(4), MadeOf.PLASTIC);
                 }
             }
-            default -> newProduct = null;
         }
         return newProduct;
     }
@@ -63,7 +62,7 @@ public class SQLBBDD {
         return saleList;
     }
 
-    public static void returnProductList(List<Product> productList){
+    public static void saveProductList(List<Product> productList){
         try (Connection connection = SQLBBDDConnection.getConnection(sqlFileName);
              PreparedStatement delete = connection.prepareStatement("TRUNCATE TABLE products");
              PreparedStatement insert = connection.prepareStatement("INSERT INTO products (type, name, price, attribute) VALUES (?, ?, ?, ?)")){
@@ -80,7 +79,7 @@ public class SQLBBDD {
             System.out.println("The stock changes could not have been saved at the database.");
         }
     }
-    public static void returnSaleList(List<Sale> saleList){
+    public static void saveSaleList(List<Sale> saleList){
         try (Connection connection = SQLBBDDConnection.getConnection(sqlFileName);
              PreparedStatement delete = connection.prepareStatement("TRUNCATE TABLE sales");
              PreparedStatement insert = connection.prepareStatement("INSERT INTO sales (totalPrice, date, productList) VALUES (?, ?, ?)")){

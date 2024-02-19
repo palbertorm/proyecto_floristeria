@@ -1,6 +1,6 @@
 package n2exercici1.services;
 
-import n2exercici1.connections.SQLBBDD;
+import n2exercici1.services.connections.SQLBBDD;
 import n2exercici1.products.Product;
 import n2exercici1.sales.Sale;
 
@@ -33,11 +33,11 @@ public class DAOService {
         return SQLBBDD.getSaleList();
     }
 
-    public void exportProductList (List<Product> productList){
-        SQLBBDD.returnProductList(productList);
+    public void saveProductList(List<Product> productList){
+        SQLBBDD.saveProductList(productList);
     }
-    public void exportSaleList (List<Sale> saleList){
-        SQLBBDD.returnSaleList(saleList);
+    public void saveSaleList(List<Sale> saleList){
+        SQLBBDD.saveSaleList(saleList);
     }
 
 }

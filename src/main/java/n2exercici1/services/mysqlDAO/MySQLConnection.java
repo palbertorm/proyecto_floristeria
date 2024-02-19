@@ -15,34 +15,35 @@ public class MySQLConnection {
 
     private static final String directory = "src/main/resources/";
     private static String sqlFileName;
-    private static String url;
-    private static String user;
-    private static String password;
+    private  String url;
+    private  String user;
+    private  String password;
     private static boolean initConnection = false;
 
     public static boolean checkShopName(String shopName){
         boolean exists;
         try (Stream<Path> files = Files.walk(Paths.get(directory))){
             exists = files.map(Path::getFileName).map(Path::toString).anyMatch(fileName -> fileName.toLowerCase().contains(shopName.toLowerCase()));
-            if(exists) sqlFileName = shopName+"flowershop";
+            sqlFileName = shopName+"flowershop";
         } catch (IOException e){
             exists = false;
         }
         return exists;
     }
 
-    private static void checkDataConnection(){
+    public MySQLConnection (){
         if (!initConnection) askData();
     }
-    private static void askData(){
-        url = "jdbc:mysql://localhost:3306/"+sqlFileName;
-        user = askString("Introduce your username: ");
-        password = askString("Introduce your password: ");
+
+    private void askData(){
+        this.url = "jdbc:mysql://localhost:3306/" + sqlFileName;
+        this.user = askString("Introduce your username: ");
+        this.password = askString("Introduce your password: ");
         initConnection = true;
     }
-    public static Connection getConnection() throws SQLException {
-        checkDataConnection();
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/pepeflowershop", "oriol", "itacademy");
+
+    public Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(this.url, this.user, this.password);
     }
 
 }
