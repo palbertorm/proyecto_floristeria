@@ -45,7 +45,7 @@ public class App {
     private static void runAddProduct(FlowerShop flowerShop){
         String productName;
         int option = askMenuOption(addProductMenu(),3);
-        while (option!=0) {
+        while (option!=0 && option<4) {
             productName = askProductName();
             if (!returnIfAlreadyStocked(flowerShop, productName, option)){
                 switch (option) {
