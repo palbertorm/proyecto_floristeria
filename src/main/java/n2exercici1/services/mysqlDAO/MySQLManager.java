@@ -13,25 +13,25 @@ import java.util.stream.Stream;
 public class MySQLManager implements DAOManager {
 
     private static final String directory = "src/main/resources/";
-    private static String sqlFileName;
+    private String shopName;
     private Connection connection;
     private DecorationDAO decorationDAO;
     private FlowerDAO flowerDAO;
     private TreeDAO treeDAO;
     private SaleDAO saleDAO;
 
-    public MySQLManager() {
+    public MySQLManager(String shopName) {
         try {
-            this.connection = new MySQLConnection(sqlFileName).getConnection();
+            this.shopName = shopName;
+            this.connection = new MySQLConnection(this.shopName+"flowershop").getConnection();
         } catch (SQLException e) {
             System.out.println("Connection failed." + e.getMessage());
         }
     }
-    public boolean checkShopName(String shopName){
+    public boolean checkShopName(){
         boolean exists;
         try (Stream<Path> files = Files.walk(Paths.get(directory))){
-            exists = files.map(Path::getFileName).map(Path::toString).anyMatch(fileName -> fileName.toLowerCase().contains(shopName.toLowerCase()));
-            sqlFileName = shopName+"flowershop";
+            exists = files.map(Path::getFileName).map(Path::toString).anyMatch(fileName -> fileName.toLowerCase().contains(this.shopName.toLowerCase()));
         } catch (IOException e){
             exists = false;
         }

@@ -22,9 +22,9 @@ public class FlowerShop {
     private boolean shopExists = true;
 
     private FlowerShop (String flowerShopName){
-        this.manager = new MySQLManager();
+        this.manager = new MySQLManager(flowerShopName);
         this.flowerShopName = flowerShopName;
-        if (manager.checkShopName(flowerShopName)) initializeAttributes();
+        if (manager.checkShopName()) initializeAttributes();
         else this.shopExists = false;
     }
     private  void initializeAttributes(){

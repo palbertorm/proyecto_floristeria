@@ -14,7 +14,7 @@ public class MySQLFlowerDAO implements FlowerDAO {
     final String INSERT = "INSERT INTO products (type, name, price, attribute) VALUES (?, ?, ?, ?)";
     final String DELETE = "DELETE FROM products WHERE LOWER(name) = LOWER(?)";
     final String GETALL = "SELECT * FROM products WHERE type = \"FLOWER\"";
-    final String GETONE = " SELECT * FROM products WHERE type = \"FLOWER\" AND LOWER(name) = LOWER(?)";
+    final String GETONE = "SELECT * FROM products WHERE type = \"FLOWER\" AND LOWER(name) = LOWER(?)";
     private final Connection connection;
 
     public MySQLFlowerDAO(Connection connection) {
@@ -61,11 +61,14 @@ public class MySQLFlowerDAO implements FlowerDAO {
     @Override
     public Flower getOne(String name) {
         Flower flower = null;
-        try(PreparedStatement getOne = connection.prepareStatement(GETONE);
-            ResultSet reader = getOne.executeQuery()) {
+        try(PreparedStatement getOne = connection.prepareStatement(GETONE)){
             getOne.setString(1, name.toLowerCase());
-            if (reader.next()) {
-                flower = createFlower(reader);
+            try (ResultSet reader = getOne.executeQuery()) {
+                if (reader.next()) {
+                    flower = createFlower(reader);
+                }
+            } catch (SQLException e) {
+                flower = null;
             }
         } catch (SQLException e) {
             flower = null;

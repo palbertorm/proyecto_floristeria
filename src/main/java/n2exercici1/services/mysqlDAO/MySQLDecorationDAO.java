@@ -16,7 +16,7 @@ public class MySQLDecorationDAO implements DecorationDAO {
     final String INSERT = "INSERT INTO products (type, name, price, attribute) VALUES (?, ?, ?, ?)";
     final String DELETE = "DELETE FROM products WHERE LOWER(name) = LOWER(?)";
     final String GETALL = "SELECT * FROM products WHERE type = \"DECORATION\"";
-    final String GETONE = " SELECT * FROM products WHERE type = \"DECORATION\" AND LOWER(name) = LOWER(?)";
+    final String GETONE = "SELECT * FROM products WHERE type = \"DECORATION\" AND LOWER(name) = LOWER(?)";
     private final Connection connection;
 
     public MySQLDecorationDAO(Connection connection) {
@@ -62,11 +62,14 @@ public class MySQLDecorationDAO implements DecorationDAO {
     @Override
     public Decoration getOne(String name) {
         Decoration decoration = null;
-        try(PreparedStatement getOne = connection.prepareStatement(GETONE);
-            ResultSet reader = getOne.executeQuery()) {
+        try(PreparedStatement getOne = connection.prepareStatement(GETONE)){
             getOne.setString(1, name.toLowerCase());
-            if (reader.next()) {
-                decoration = createDecoration(reader);
+            try (ResultSet reader = getOne.executeQuery()) {
+                if (reader.next()) {
+                    decoration = createDecoration(reader);
+                }
+            } catch (SQLException e){
+                decoration = null;
             }
         } catch (SQLException e) {
             decoration = null;

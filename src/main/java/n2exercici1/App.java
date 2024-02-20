@@ -234,7 +234,7 @@ public class App {
                 (2). Remove a product
                 (3). Enter to store's info menu
                 (4). Enter to sale's menu
-                (0). Close app and save changes""";
+                (0). Close app""";
     }
     private static String addProductMenu(){
         return """

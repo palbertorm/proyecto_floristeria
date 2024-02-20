@@ -15,7 +15,7 @@ public class MySQLTreeDAO implements TreeDAO {
     final String INSERT = "INSERT INTO products (type, name, price, attribute) VALUES (?, ?, ?, ?)";
     final String DELETE = "DELETE FROM products WHERE LOWER(name) = LOWER(?)";
     final String GETALL = "SELECT * FROM products WHERE type = \"TREE\"";
-    final String GETONE = " SELECT * FROM products WHERE type = \"TREE\" AND LOWER(name) = LOWER(?)";
+    final String GETONE = "SELECT * FROM products WHERE type = \"TREE\" AND LOWER(name) = LOWER(?)";
     private final Connection connection;
 
     public MySQLTreeDAO(Connection connection) {
@@ -62,11 +62,14 @@ public class MySQLTreeDAO implements TreeDAO {
     @Override
     public Tree getOne(String name) {
         Tree tree = null;
-        try(PreparedStatement getOne = connection.prepareStatement(GETONE);
-            ResultSet reader = getOne.executeQuery()) {
+        try(PreparedStatement getOne = connection.prepareStatement(GETONE)){
             getOne.setString(1, name.toLowerCase());
-            if (reader.next()) {
-                tree = createTree(reader);
+            try (ResultSet reader = getOne.executeQuery()) {
+                if (reader.next()) {
+                    tree = createTree(reader);
+                }
+            } catch (SQLException e){
+                tree = null;
             }
         } catch (SQLException e) {
             tree = null;

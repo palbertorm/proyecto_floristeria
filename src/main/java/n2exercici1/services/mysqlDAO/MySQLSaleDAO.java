@@ -11,7 +11,7 @@ import java.util.List;
 public class MySQLSaleDAO implements SaleDAO {
     final String INSERT = "INSERT INTO sales (totalPrice, date, productList) VALUES (?, ?, ?)";
     final String GETALL = "SELECT * FROM sales";
-    final String GETONE = " SELECT * FROM sales WHERE id = ?";
+    final String GETONE = "SELECT * FROM sales WHERE id = ?";
     private final Connection connection;
 
     public MySQLSaleDAO(Connection connection) {
@@ -22,7 +22,7 @@ public class MySQLSaleDAO implements SaleDAO {
     public void insert(Sale sale) {
         try(PreparedStatement insert = connection.prepareStatement(INSERT)) {
             insert.setDouble(1, sale.getSaleAmount());
-            insert.setDate(2, (Date) sale.getSaleDate());
+            insert.setDate(2, new java.sql.Date(sale.getSaleDate().getTime()));
             insert.setString(3, String.join(";", sale.getProductList()));
             if (insert.executeUpdate() == 0){
                 System.out.println("This sale could not be registered");
@@ -46,11 +46,14 @@ public class MySQLSaleDAO implements SaleDAO {
     @Override
     public Sale getOne (Integer id) {
         Sale sale = null;
-        try(PreparedStatement getOne = connection.prepareStatement(GETONE);
-            ResultSet reader = getOne.executeQuery()) {
+        try(PreparedStatement getOne = connection.prepareStatement(GETONE)){
             getOne.setInt(1, id);
-            if (reader.next()) {
-                sale = createSale(reader);
+            try (ResultSet reader = getOne.executeQuery()) {
+                if (reader.next()) {
+                    sale = createSale(reader);
+                }
+            } catch (SQLException e){
+                sale = null;
             }
         } catch (SQLException e) {
             sale = null;
