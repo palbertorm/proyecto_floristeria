@@ -14,7 +14,7 @@ public abstract class Product {
     public Product (int productID, String name, double price){
         this.name = name;
         this.price = price;
-        this.idProduct = productID;
+        this.idProduct = productID+1;
     }
 
     public int getIdProduct(){

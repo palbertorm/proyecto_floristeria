@@ -118,7 +118,7 @@ public class App {
                 case 5 -> flowerShop.processSale(cart);
                 case 0 -> option = confirmExiting("Are you sure you want to cancel the sale? (YES/NO): ");
             }
-        } while (option!=0 && option!=3);
+        } while (option!=0 && option!=5);
         if (option==0) returnProductsToStock(flowerShop, cart);
     }
     private static List<Product> addToCart (FlowerShop flowerShop, List<Product> cart, String productType){

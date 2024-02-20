@@ -45,12 +45,12 @@ public class MySQLManager implements DAOManager {
     }
     @Override
     public TreeDAO getTreeDAO() {
-        if (treeDAO == null) treeDAO = new MySQLTreeDAO(connection);
+        if (treeDAO == null) treeDAO = new MySQLTreeDAO(this.connection);
         return treeDAO;
     }
     @Override
     public DecorationDAO getDecorationDAO() {
-        if (decorationDAO == null) decorationDAO = new MySQLDecorationDAO(connection);
+        if (decorationDAO == null) decorationDAO = new MySQLDecorationDAO(this.connection);
         return decorationDAO;
     }
     @Override
