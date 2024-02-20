@@ -9,18 +9,15 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MySQLSaleDAO implements SaleDAO {
-    final String INSERT = "INSERT INTO sales (totalPrice, date, productList) VALUES (?, ?, ?)";
-    final String GETALL = "SELECT * FROM sales";
-    final String GETONE = "SELECT * FROM sales WHERE id = ?";
-    private final Connection connection;
 
+    private final Connection connection;
     public MySQLSaleDAO(Connection connection) {
         this.connection = connection;
     }
 
     @Override
     public void insert(Sale sale) {
-        try(PreparedStatement insert = connection.prepareStatement(INSERT)) {
+        try(PreparedStatement insert = connection.prepareStatement(MySQLQueries.INSERT_SALE)) {
             insert.setDouble(1, sale.getSaleAmount());
             insert.setDate(2, new java.sql.Date(sale.getSaleDate().getTime()));
             insert.setString(3, String.join(";", sale.getProductList()));
@@ -34,7 +31,7 @@ public class MySQLSaleDAO implements SaleDAO {
     @Override
     public List<Sale> getAll() {
         List <Sale> saleList = new ArrayList<>();
-        try (ResultSet reader = (connection.prepareStatement(GETALL)).executeQuery()) {
+        try (ResultSet reader = (connection.prepareStatement(MySQLQueries.GET_ALL_SALES)).executeQuery()) {
             while (reader.next()) {
                 saleList.add(createSale(reader));
             }
@@ -46,7 +43,7 @@ public class MySQLSaleDAO implements SaleDAO {
     @Override
     public Sale getOne (Integer id) {
         Sale sale = null;
-        try(PreparedStatement getOne = connection.prepareStatement(GETONE)){
+        try(PreparedStatement getOne = connection.prepareStatement(MySQLQueries.GET_SALE)){
             getOne.setInt(1, id);
             try (ResultSet reader = getOne.executeQuery()) {
                 if (reader.next()) {
@@ -69,13 +66,6 @@ public class MySQLSaleDAO implements SaleDAO {
     @Override
     public void delete(Sale sale) {}
     @Override
-    public void update(Sale sale) {
-
-    }
-
-
-
-
-
+    public void update(Sale sale) {}
 
 }

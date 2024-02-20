@@ -12,19 +12,14 @@ import java.util.List;
 
 public class MySQLTreeDAO implements TreeDAO {
 
-    final String INSERT = "INSERT INTO products (type, name, price, attribute) VALUES (?, ?, ?, ?)";
-    final String DELETE = "DELETE FROM products WHERE LOWER(name) = LOWER(?)";
-    final String GETALL = "SELECT * FROM products WHERE type = \"TREE\"";
-    final String GETONE = "SELECT * FROM products WHERE type = \"TREE\" AND LOWER(name) = LOWER(?)";
     private final Connection connection;
-
     public MySQLTreeDAO(Connection connection) {
         this.connection = connection;
     }
 
     @Override
     public void insert(Tree tree) {
-        try(PreparedStatement insert = connection.prepareStatement(INSERT)) {
+        try(PreparedStatement insert = connection.prepareStatement(MySQLQueries.INSERT_PRODUCT)) {
             insert.setString(1, tree.getType());
             insert.setString(2, tree.getName());
             insert.setDouble(3, tree.getPrice());
@@ -38,7 +33,7 @@ public class MySQLTreeDAO implements TreeDAO {
     }
     @Override
     public void delete(Tree tree) {
-        try(PreparedStatement delete = connection.prepareStatement(DELETE)) {
+        try(PreparedStatement delete = connection.prepareStatement(MySQLQueries.DELETE_PRODUCT)) {
             delete.setString(1, tree.getName().toLowerCase());
             if (delete.executeUpdate() == 0){
                 System.out.println("The stock changes could not be made.");
@@ -50,7 +45,7 @@ public class MySQLTreeDAO implements TreeDAO {
     @Override
     public List<Tree> getAll() {
         List <Tree> treeList = new ArrayList<>();
-        try (ResultSet reader = (connection.prepareStatement(GETALL)).executeQuery()) {
+        try (ResultSet reader = (connection.prepareStatement(MySQLQueries.GET_ALL_TREES)).executeQuery()) {
             while (reader.next()) {
                 treeList.add(createTree(reader));
             }
@@ -62,7 +57,7 @@ public class MySQLTreeDAO implements TreeDAO {
     @Override
     public Tree getOne(String name) {
         Tree tree = null;
-        try(PreparedStatement getOne = connection.prepareStatement(GETONE)){
+        try(PreparedStatement getOne = connection.prepareStatement(MySQLQueries.GET_TREE)){
             getOne.setString(1, name.toLowerCase());
             try (ResultSet reader = getOne.executeQuery()) {
                 if (reader.next()) {
@@ -81,7 +76,6 @@ public class MySQLTreeDAO implements TreeDAO {
     }
 
     @Override
-    public void update(Tree tree) {
+    public void update(Tree tree) {}
 
-    }
 }

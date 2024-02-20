@@ -32,8 +32,7 @@ public class Sale {
     }
 
     public String generateTicket() {
-        String ticketHeadline = "Ticket nº " + this.idSale + "\n" + "Date: " + this.saleDate + "\n" +
-                "Product    Name    Description     Price" + "\n";
+        String ticketHeadline = "Ticket nº " + this.idSale + "\n" + "Date: " + this.saleDate + "\n";
         return ticketHeadline + String.join("\n", this.productList);
     }
     public String toString(){

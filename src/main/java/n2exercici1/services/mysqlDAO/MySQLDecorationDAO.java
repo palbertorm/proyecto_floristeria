@@ -13,18 +13,14 @@ import java.util.List;
 
 public class MySQLDecorationDAO implements DecorationDAO {
 
-    final String INSERT = "INSERT INTO products (type, name, price, attribute) VALUES (?, ?, ?, ?)";
-    final String DELETE = "DELETE FROM products WHERE LOWER(name) = LOWER(?)";
-    final String GETALL = "SELECT * FROM products WHERE type = \"DECORATION\"";
-    final String GETONE = "SELECT * FROM products WHERE type = \"DECORATION\" AND LOWER(name) = LOWER(?)";
     private final Connection connection;
-
     public MySQLDecorationDAO(Connection connection) {
         this.connection = connection;
     }
+
     @Override
     public void insert(Decoration decoration) {
-        try(PreparedStatement insert = connection.prepareStatement(INSERT)) {
+        try(PreparedStatement insert = connection.prepareStatement(MySQLQueries.INSERT_PRODUCT)) {
             insert.setString(1, decoration.getType());
             insert.setString(2, decoration.getName());
             insert.setDouble(3, decoration.getPrice());
@@ -38,7 +34,7 @@ public class MySQLDecorationDAO implements DecorationDAO {
     }
     @Override
     public void delete(Decoration decoration) {
-        try(PreparedStatement delete = connection.prepareStatement(DELETE)) {
+        try(PreparedStatement delete = connection.prepareStatement(MySQLQueries.DELETE_PRODUCT)) {
             delete.setString(1, decoration.getName().toLowerCase());
             if (delete.executeUpdate() == 0){
                 System.out.println("The stock changes could not be made");
@@ -50,7 +46,7 @@ public class MySQLDecorationDAO implements DecorationDAO {
     @Override
     public List<Decoration> getAll() {
         List <Decoration> decorationList = new ArrayList<>();
-        try (ResultSet reader = (connection.prepareStatement(GETALL)).executeQuery()) {
+        try (ResultSet reader = (connection.prepareStatement(MySQLQueries.GET_ALL_DECORATIONS)).executeQuery()) {
             while (reader.next()) {
                 decorationList.add(createDecoration(reader));
             }
@@ -62,7 +58,7 @@ public class MySQLDecorationDAO implements DecorationDAO {
     @Override
     public Decoration getOne(String name) {
         Decoration decoration = null;
-        try(PreparedStatement getOne = connection.prepareStatement(GETONE)){
+        try(PreparedStatement getOne = connection.prepareStatement(MySQLQueries.GET_DECORATION)){
             getOne.setString(1, name.toLowerCase());
             try (ResultSet reader = getOne.executeQuery()) {
                 if (reader.next()) {
@@ -83,7 +79,6 @@ public class MySQLDecorationDAO implements DecorationDAO {
     }
 
     @Override
-    public void update(Decoration decoration) {
+    public void update(Decoration decoration) {}
 
-    }
 }

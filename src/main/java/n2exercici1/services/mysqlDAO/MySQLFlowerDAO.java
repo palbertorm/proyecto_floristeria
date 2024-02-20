@@ -11,19 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MySQLFlowerDAO implements FlowerDAO {
-    final String INSERT = "INSERT INTO products (type, name, price, attribute) VALUES (?, ?, ?, ?)";
-    final String DELETE = "DELETE FROM products WHERE LOWER(name) = LOWER(?)";
-    final String GETALL = "SELECT * FROM products WHERE type = \"FLOWER\"";
-    final String GETONE = "SELECT * FROM products WHERE type = \"FLOWER\" AND LOWER(name) = LOWER(?)";
-    private final Connection connection;
 
+    private final Connection connection;
     public MySQLFlowerDAO(Connection connection) {
         this.connection = connection;
     }
 
     @Override
     public void insert(Flower flower) {
-        try(PreparedStatement insert = connection.prepareStatement(INSERT)) {
+        try(PreparedStatement insert = connection.prepareStatement(MySQLQueries.INSERT_PRODUCT)) {
             insert.setString(1, flower.getType());
             insert.setString(2, flower.getName());
             insert.setDouble(3, flower.getPrice());
@@ -37,7 +33,7 @@ public class MySQLFlowerDAO implements FlowerDAO {
     }
     @Override
     public void delete(Flower flower) {
-        try(PreparedStatement delete = connection.prepareStatement(DELETE)) {
+        try(PreparedStatement delete = connection.prepareStatement(MySQLQueries.DELETE_PRODUCT)) {
             delete.setString(1, flower.getName().toLowerCase());
             if (delete.executeUpdate() == 0){
                 System.out.println("The stock changes could not be made");
@@ -49,7 +45,7 @@ public class MySQLFlowerDAO implements FlowerDAO {
     @Override
     public List<Flower> getAll() {
         List <Flower> flowerList = new ArrayList<>();
-        try (ResultSet reader = (connection.prepareStatement(GETALL)).executeQuery()) {
+        try (ResultSet reader = (connection.prepareStatement(MySQLQueries.GET_ALL_FLOWERS)).executeQuery()) {
             while (reader.next()) {
                 flowerList.add(createFlower(reader));
             }
@@ -61,7 +57,7 @@ public class MySQLFlowerDAO implements FlowerDAO {
     @Override
     public Flower getOne(String name) {
         Flower flower = null;
-        try(PreparedStatement getOne = connection.prepareStatement(GETONE)){
+        try(PreparedStatement getOne = connection.prepareStatement(MySQLQueries.GET_FLOWER)){
             getOne.setString(1, name.toLowerCase());
             try (ResultSet reader = getOne.executeQuery()) {
                 if (reader.next()) {
@@ -80,13 +76,6 @@ public class MySQLFlowerDAO implements FlowerDAO {
     }
 
     @Override
-    public void update(Flower flower) {
-
-    }
-
-
-
-
-
+    public void update(Flower flower) {}
 
 }
