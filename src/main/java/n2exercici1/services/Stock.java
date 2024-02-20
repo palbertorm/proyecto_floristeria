@@ -13,7 +13,7 @@ import java.util.List;
 public class Stock {
 
     private static Stock stock;
-    private boolean initStock; // IMPIDE QUE SE LANZE EL MENSAJE PRODUCTO AÑADIDO HASTA QUE SE HAYA CARGADO LA BBDD
+    private boolean initStock;
     private FlowerDAO flowerDAO;
     private TreeDAO treeDAO;
     private DecorationDAO decorationDAO;
@@ -43,7 +43,6 @@ public class Stock {
                 + getFlowerStock().stream().mapToDouble(Product::getPrice).sum()
                 + getDecorationStock().stream().mapToDouble(Product::getPrice).sum();
     }
-
     public boolean getInitStock(){
         return this.initStock;
     }

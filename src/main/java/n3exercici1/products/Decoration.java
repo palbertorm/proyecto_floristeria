@@ -10,6 +10,10 @@ public class Decoration extends Product {
         super(name, price);
         this.material = madeOf.name().toLowerCase();
     }
+    public Decoration(int id, String name, double price, MadeOf madeOf){
+        super(id, name, price);
+        this.material = madeOf.name().toLowerCase();
+    }
 
     public String getType(){
         return "DECORATION";

@@ -6,7 +6,6 @@ import java.util.List;
 public class Sale {
 
     private int idSale;
-    private static int idCounter = 1;
     private final double saleAmount;
     private final Date saleDate;
     private final List<String> productList;
@@ -15,7 +14,13 @@ public class Sale {
         this.saleAmount = salePrice;
         this.saleDate = saleDate;
         this.productList = productList;
-        this.idSale += idCounter++;
+    }
+
+    public Sale (int idSale, double salePrice, Date saleDate, List<String> productList){
+        this.saleAmount = salePrice;
+        this.saleDate = saleDate;
+        this.productList = productList;
+        this.idSale = idSale+1;
     }
 
     public int getIdSale(){

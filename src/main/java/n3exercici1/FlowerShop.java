@@ -6,17 +6,15 @@ import n3exercici1.products.Flower;
 import n3exercici1.products.Product;
 import n3exercici1.products.Tree;
 import n3exercici1.products.enums.MadeOf;
-import n3exercici1.sales.Sale;
-import n3exercici1.services.DAOService;
 import n3exercici1.services.SalesManager;
 import n3exercici1.services.Stock;
+import n3exercici1.services.mongoDBDAO.MongoDBManager;
 
-import java.util.Comparator;
 import java.util.List;
 
 public class FlowerShop {
 
-    private final DAOService service;
+    private final MongoDBManager manager;
     private static FlowerShop flowerShop;
     private final String flowerShopName;
     private Stock stock;
@@ -24,14 +22,14 @@ public class FlowerShop {
     private boolean shopExists = true;
 
     private FlowerShop (String flowerShopName){
-        this.service = new DAOService();
+        this.manager = new MongoDBManager(flowerShopName);
         this.flowerShopName = flowerShopName;
-        if (service.checkShopName(flowerShopName)) initializeAttributes();
+        if (manager.checkShopName()) initializeAttributes();
         else this.shopExists = false;
     }
     private void initializeAttributes(){
-        this.stock = Stock.getStock(this.service);
-        this.salesManager = SalesManager.getSalesManager(this.service);
+        this.stock = Stock.getStock(this.manager);
+        this.salesManager = SalesManager.getSalesManager(this.manager);
         this.shopExists = stock.getInitStock() && salesManager.getInitSalesManager();
     }
     public static FlowerShop openFlowerShop(String flowerShopName){
@@ -44,10 +42,12 @@ public class FlowerShop {
 
     // TREE'S METHOD
     public void addTree(String treeName, double treePrice, double treeHeigth){
-        stock.addProduct(new Tree(treeName, treePrice, treeHeigth));
+        stock.addProduct(new Tree(manager.getTreeDAO().getLastID(), treeName, treePrice, treeHeigth));
     }
     public void printTreeStock(){
-        stock.getTreeStock().forEach(System.out::println);
+        List<Tree> treeStock = stock.getTreeStock();
+        if (treeStock.isEmpty()) System.out.println("The tree's stock is empty.");
+        else treeStock.forEach(System.out::println);
     }
     public void removeTree(String productName){
         try{
@@ -59,10 +59,12 @@ public class FlowerShop {
 
     // FLOWER'S METHOD
     public void addFlower(String flowerName, double flowerPrice, String flowerColor){
-        stock.addProduct(new Flower(flowerName, flowerPrice, flowerColor));
+        stock.addProduct(new Flower(manager.getFlowerDAO().getLastID(), flowerName, flowerPrice, flowerColor));
     }
     public void printFlowerStock(){
-        stock.getFlowerStock().forEach(System.out::println);
+        List<Flower> flowerStock = stock.getFlowerStock();
+        if (flowerStock.isEmpty()) System.out.println("The flower's stock is empty.");
+        else flowerStock.forEach(System.out::println);
     }
     public void removeFlower(String productName){
         try {
@@ -74,10 +76,12 @@ public class FlowerShop {
 
     // DECORATION'S METHOD
     public void addDecoration(String decorationName, double decorationPrice, MadeOf madeof) {
-        stock.addProduct(new Decoration(decorationName, decorationPrice, madeof));
+        stock.addProduct(new Decoration(manager.getDecorationDAO().getLastID(), decorationName, decorationPrice, madeof));
     }
     public void printDecorationStock(){
-        stock.getDecorationStock().forEach(System.out::println);
+        List<Decoration> decorationList = stock.getDecorationStock();
+        if (decorationList.isEmpty()) System.out.println("The decoration's stock is empty.");
+        else decorationList.forEach(System.out::println);
     }
     public void removeDecoration(String productName){
         try {
@@ -106,13 +110,14 @@ public class FlowerShop {
     public Product findProduct(String productName, String productType){
         return stock.findProduct(productName, productType);
     }
-    public void returnProduct (List<Product> cart){
-        cart.forEach(stock::addProduct);
+    public void returnProduct (Product product){
+        stock.addProduct(product);
     }
     public void processSale(List<Product> cart){
         double salePrice = cart.stream().mapToDouble(Product::getPrice).sum();
         salesManager.manageTheCart(cart, salePrice);
     }
+
     public void printSalesHistory(){
         salesManager.printSalesHistory();
     }
@@ -121,15 +126,6 @@ public class FlowerShop {
     }
     public void printSaleTicket(int idSale){
         salesManager.printTcket(idSale);
-    }
-
-    // WRAP UP METHOD
-    public void saveChanges(){
-        List<Product> productList = stock.getProductStock();
-        productList.sort(Comparator.comparingInt(Product::getIdProduct));
-        List<Sale> saleList = salesManager.getSalesHistoryList();
-        service.exportProductList(productList);
-        service.exportSaleList(saleList);
     }
 
 }

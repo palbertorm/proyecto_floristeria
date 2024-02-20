@@ -3,14 +3,18 @@ package n3exercici1.products;
 public abstract class Product {
 
     private int idProduct;
-    private static int idCounter=1;
     private final String name;
     private final double price;
 
     public Product (String name, double price){
         this.name = name;
         this.price = price;
-        this.idProduct += idCounter++;
+    }
+
+    public Product (int productID, String name, double price){
+        this.name = name;
+        this.price = price;
+        this.idProduct = productID;
     }
 
     public int getIdProduct(){

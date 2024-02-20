@@ -77,4 +77,5 @@ public class SalesManager {
             System.out.println("This sale's ID is not registered.");
         }
     }
+
 }

@@ -8,6 +8,10 @@ public class Flower extends Product {
         super(name, price);
         this.color = color;
     }
+    public Flower (int id, String name, double price, String color){
+        super(id, name, price);
+        this.color = color;
+    }
 
     public String getType(){
         return "FLOWER";

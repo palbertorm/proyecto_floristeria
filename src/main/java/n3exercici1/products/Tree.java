@@ -8,6 +8,10 @@ public class Tree extends Product {
         super(name, price);
         this.height = height;
     }
+    public Tree (int id, String name, double price, double height){
+        super(id, name, price);
+        this.height = height;
+    }
 
     public String getType(){
         return "TREE";
