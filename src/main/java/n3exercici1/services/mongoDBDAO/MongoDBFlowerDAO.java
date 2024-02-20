@@ -44,7 +44,7 @@ public class MongoDBFlowerDAO implements FlowerDAO {
     public List<Flower> getAll() {
         List<Flower> flowerList = new ArrayList<>();
         try {
-            for (Document doc : collection.find()){
+            for (Document doc : collection.find(Filters.eq("type","FLOWER"))){
                 flowerList.add(createFlower(doc));
             }
         } catch (Exception e) {
@@ -57,7 +57,7 @@ public class MongoDBFlowerDAO implements FlowerDAO {
     public Flower getOne(String name) {
         Flower flower = null;
         try {
-            Document doc = collection.find(Filters.eq("name", name)).first();
+            Document doc = collection.find(Filters.and(Filters.eq("type", "FLOWER"), Filters.eq("name", name))).first();
             if (doc != null) flower = createFlower(doc);
         } catch (Exception e) {
             System.out.println("An error ocurred at obtaining the flower: " + e.getMessage());
@@ -65,7 +65,9 @@ public class MongoDBFlowerDAO implements FlowerDAO {
         return flower;
     }
     private Flower createFlower(Document doc) {
-        return new Flower(doc.getInteger("id"),doc.getString("name"), doc.getDouble("price"), doc.getString("attribute"));
+        return new Flower(doc.getString("name"),
+                doc.getDouble("price"),
+                doc.getString("attribute"));
     }
     @Override
     public int getLastID(){

@@ -14,9 +14,8 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     implementation ("mysql:mysql-connector-java:8.0.28")
     implementation ("org.mongodb:mongodb-driver-sync:4.11.1")
-
-    implementation ("org.slf4j:slf4j-api:2.0.12")
-    implementation ("ch.qos.logback:logback-classic:1.5.0")
+    implementation("org.slf4j:slf4j-api:1.7.32")
+    implementation("ch.qos.logback:logback-classic:1.2.6")
 }
 
 tasks.test {

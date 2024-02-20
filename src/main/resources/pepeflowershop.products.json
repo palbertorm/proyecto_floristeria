@@ -1,8 +1,7 @@
 [{
   "_id": {
-    "$oid": "65d4165173b2d09310b10089"
+    "$oid": "65d424f8f889a20904ee19e4"
   },
-  "id": 1,
   "type": "FLOWER",
   "name": "Rosas",
   "price": 15.5,
@@ -10,19 +9,17 @@
 },
 {
   "_id": {
-    "$oid": "65d4165173b2d09310b1008a"
+    "$oid": "65d424f8f889a20904ee19e5"
   },
-  "id": 2,
   "type": "TREE",
   "name": "Pino",
   "price": 25.75,
-  "attribute": 3.5
+  "attribute": "3.5"
 },
 {
   "_id": {
-    "$oid": "65d4165173b2d09310b1008b"
+    "$oid": "65d424f8f889a20904ee19e6"
   },
-  "id": 3,
   "type": "DECORATION",
   "name": "Jarrón",
   "price": 10.2,
@@ -30,9 +27,8 @@
 },
 {
   "_id": {
-    "$oid": "65d4165173b2d09310b1008c"
+    "$oid": "65d424f8f889a20904ee19e7"
   },
-  "id": 4,
   "type": "FLOWER",
   "name": "Margaritas",
   "price": 12.8,
@@ -40,9 +36,8 @@
 },
 {
   "_id": {
-    "$oid": "65d4165173b2d09310b1008d"
+    "$oid": "65d424f8f889a20904ee19e8"
   },
-  "id": 5,
   "type": "DECORATION",
   "name": "Lámpara",
   "price": 30,
@@ -50,19 +45,17 @@
 },
 {
   "_id": {
-    "$oid": "65d4165173b2d09310b1008e"
+    "$oid": "65d424f8f889a20904ee19e9"
   },
-  "id": 6,
   "type": "TREE",
   "name": "Roble",
   "price": 35.25,
-  "attribute": 4.2
+  "attribute": "4.2"
 },
 {
   "_id": {
-    "$oid": "65d4165173b2d09310b1008f"
+    "$oid": "65d424f8f889a20904ee19ea"
   },
-  "id": 7,
   "type": "FLOWER",
   "name": "Tulipanes",
   "price": 18.9,
@@ -70,9 +63,8 @@
 },
 {
   "_id": {
-    "$oid": "65d4165173b2d09310b10090"
+    "$oid": "65d424f8f889a20904ee19eb"
   },
-  "id": 8,
   "type": "DECORATION",
   "name": "Silla",
   "price": 22.5,
@@ -80,9 +72,8 @@
 },
 {
   "_id": {
-    "$oid": "65d4165173b2d09310b10091"
+    "$oid": "65d424f8f889a20904ee19ec"
   },
-  "id": 9,
   "type": "FLOWER",
   "name": "Lirios",
   "price": 20.3,
@@ -90,19 +81,17 @@
 },
 {
   "_id": {
-    "$oid": "65d4165173b2d09310b10092"
+    "$oid": "65d424f8f889a20904ee19ed"
   },
-  "id": 10,
   "type": "TREE",
   "name": "Arce",
   "price": 28.6,
-  "attribute": 3.8
+  "attribute": "3.8"
 },
 {
   "_id": {
-    "$oid": "65d4165173b2d09310b10093"
+    "$oid": "65d424f8f889a20904ee19ee"
   },
-  "id": 11,
   "type": "DECORATION",
   "name": "Mesa",
   "price": 45.8,
@@ -110,9 +99,8 @@
 },
 {
   "_id": {
-    "$oid": "65d4165173b2d09310b10094"
+    "$oid": "65d424f8f889a20904ee19ef"
   },
-  "id": 12,
   "type": "FLOWER",
   "name": "Girasoles",
   "price": 14.75,
@@ -120,9 +108,8 @@
 },
 {
   "_id": {
-    "$oid": "65d4165173b2d09310b10095"
+    "$oid": "65d424f8f889a20904ee19f0"
   },
-  "id": 13,
   "type": "DECORATION",
   "name": "Estantería",
   "price": 55,
@@ -130,9 +117,8 @@
 },
 {
   "_id": {
-    "$oid": "65d4165173b2d09310b10096"
+    "$oid": "65d424f8f889a20904ee19f1"
   },
-  "id": 14,
   "type": "FLOWER",
   "name": "Orquídeas",
   "price": 30.5,
@@ -140,9 +126,8 @@
 },
 {
   "_id": {
-    "$oid": "65d4165173b2d09310b10097"
+    "$oid": "65d424f8f889a20904ee19f2"
   },
-  "id": 15,
   "type": "DECORATION",
   "name": "Maceta",
   "price": 8.9,
@@ -150,19 +135,17 @@
 },
 {
   "_id": {
-    "$oid": "65d4165173b2d09310b10098"
+    "$oid": "65d424f8f889a20904ee19f3"
   },
-  "id": 16,
   "type": "TREE",
   "name": "Abeto",
   "price": 22.75,
-  "attribute": 4
+  "attribute": "4.0"
 },
 {
   "_id": {
-    "$oid": "65d4165173b2d09310b10099"
+    "$oid": "65d424f8f889a20904ee19f4"
   },
-  "id": 17,
   "type": "FLOWER",
   "name": "Jacintos",
   "price": 16.2,
@@ -170,9 +153,8 @@
 },
 {
   "_id": {
-    "$oid": "65d4165173b2d09310b1009a"
+    "$oid": "65d424f8f889a20904ee19f5"
   },
-  "id": 18,
   "type": "DECORATION",
   "name": "Sofá",
   "price": 65.3,
@@ -180,19 +162,17 @@
 },
 {
   "_id": {
-    "$oid": "65d4165173b2d09310b1009b"
+    "$oid": "65d424f8f889a20904ee19f6"
   },
-  "id": 19,
   "type": "TREE",
   "name": "Abies",
   "price": 30.5,
-  "attribute": 4.1
+  "attribute": "4.1"
 },
 {
   "_id": {
-    "$oid": "65d4165173b2d09310b1009c"
+    "$oid": "65d424f8f889a20904ee19f7"
   },
-  "id": 20,
   "type": "FLOWER",
   "name": "Dalias",
   "price": 22.8,
@@ -200,11 +180,10 @@
 },
 {
   "_id": {
-    "$oid": "65d4165173b2d09310b1009d"
+    "$oid": "65d424f8f889a20904ee19f8"
   },
-  "id": 21,
   "type": "TREE",
   "name": "Olivo",
   "price": 53.4,
-  "attribute": 4.8
+  "attribute": "4.8"
 }]

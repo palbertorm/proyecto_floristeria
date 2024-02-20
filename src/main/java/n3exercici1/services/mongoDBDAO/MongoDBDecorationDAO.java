@@ -46,7 +46,7 @@ public class MongoDBDecorationDAO implements DecorationDAO {
     public List<Decoration> getAll() {
         List<Decoration> decorationList = new ArrayList<>();
         try {
-            for (Document doc : collection.find()){
+            for (Document doc : collection.find(Filters.eq("type","DECORATION"))){
                 decorationList.add(createDecoration(doc));
             }
         } catch (Exception e) {
@@ -59,7 +59,7 @@ public class MongoDBDecorationDAO implements DecorationDAO {
     public Decoration getOne(String name) {
         Decoration decoration = null;
         try {
-            Document doc = collection.find(Filters.eq("name", name)).first();
+            Document doc = collection.find(Filters.and(Filters.eq("type", "DECORATION"), Filters.eq("name", name))).first();
             if (doc != null) decoration = createDecoration(doc);
         } catch (Exception e) {
             System.out.println("An error ocurred at obtaining the decoration: " + e.getMessage());
@@ -67,10 +67,9 @@ public class MongoDBDecorationDAO implements DecorationDAO {
         return decoration;
     }
     private Decoration createDecoration(Document doc) {
-        return new Decoration(doc.getInteger("id"),
-                doc.getString("name"),
+        return new Decoration(doc.getString("name"),
                 doc.getDouble("price"),
-                doc.getString("attribute").equalsIgnoreCase("WOOD") ? MadeOf.WOOD : MadeOf.PLASTIC);
+                doc.getString("attribute").equalsIgnoreCase("wood") ? MadeOf.WOOD : MadeOf.PLASTIC);
     }
     @Override
     public int getLastID(){

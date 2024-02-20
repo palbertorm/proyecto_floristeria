@@ -46,7 +46,7 @@ public class MongoDBTreeDAO implements TreeDAO {
     public List<Tree> getAll() {
         List<Tree> treeList = new ArrayList<>();
         try {
-            for (Document doc : collection.find()){
+            for (Document doc : collection.find(Filters.eq("type","TREE"))){
                 treeList.add(createTree(doc));
             }
         } catch (Exception e) {
@@ -59,7 +59,7 @@ public class MongoDBTreeDAO implements TreeDAO {
     public Tree getOne(String name) {
         Tree tree = null;
         try {
-            Document doc = collection.find(Filters.eq("name", name)).first();
+            Document doc = collection.find(Filters.and(Filters.eq("type", "TREE"), Filters.eq("name", name))).first();
             if (doc != null) tree = createTree(doc);
         } catch (Exception e) {
             System.out.println("An error ocurred at obtaining the tree: " + e.getMessage());
@@ -67,7 +67,9 @@ public class MongoDBTreeDAO implements TreeDAO {
         return tree;
     }
     private Tree createTree(Document doc) {
-        return new Tree(doc.getInteger("id"),doc.getString("name"), doc.getDouble("price"), doc.getDouble("attribute"));
+        return new Tree(doc.getString("name"),
+                doc.getDouble("price"),
+                doc.getDouble("attribute"));
     }
     @Override
     public int getLastID() {

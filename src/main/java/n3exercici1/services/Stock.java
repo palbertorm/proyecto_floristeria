@@ -39,9 +39,12 @@ public class Stock {
         return getFlowerStock().isEmpty() && getTreeStock().isEmpty() && getDecorationStock().isEmpty();
     }
     private void calculateStockValue(){
-        this.stockValue = getTreeStock().stream().mapToDouble(Product::getPrice).sum()
-                + getFlowerStock().stream().mapToDouble(Product::getPrice).sum()
-                + getDecorationStock().stream().mapToDouble(Product::getPrice).sum();
+        List<Tree> treeStock = getTreeStock();
+        List<Flower> flowerStock = getFlowerStock();
+        List<Decoration> decorationStock = getDecorationStock();
+        this.stockValue = treeStock.stream().mapToDouble(Product::getPrice).sum()
+                + flowerStock.stream().mapToDouble(Product::getPrice).sum()
+                + decorationStock.stream().mapToDouble(Product::getPrice).sum();
     }
     public boolean getInitStock(){
         return this.initStock;
